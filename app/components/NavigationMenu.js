@@ -10,15 +10,15 @@ function getUniqueCategories(data) {
     return [...new Set(categories)];
 }
 
-const NavigationMenu = () => {
+const NavigationMenu = ({ ulClassName }) => {
     const categories = getUniqueCategories(mockData);
     const path = usePathname();
     
     return (
-        <div className='bg-gray-800 p-4'>
-            <ul className='flex space-x-4 justify-center'>
+        <div className='bg-red-400'>
+            <ul className={`${ulClassName}`}>
                 {categories.map((category, index) => (
-                    <li key={index} className={`text-white ${path === '/products/' + category.toLowerCase() ? 'underline' : 'no-underline'}`}>
+                    <li key={index} className={`text-black font-bold py-4 px-2 ${path === '/products/' + category.toLowerCase() ? 'bg-red-600' : 'no-underline'}`}>
                         <Link href={`/products/${category.toLowerCase()}`}>{category}</Link>
                     </li>
                 ))}

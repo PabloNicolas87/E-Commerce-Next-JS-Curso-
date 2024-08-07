@@ -1,13 +1,13 @@
 import React from 'react'
 import NavigationMenu from '../components/NavigationMenu'
 
-const layout = ({children}) => {
+const Layout = ({children}) => {
   return (
     <div>
-        <NavigationMenu></NavigationMenu>
+        <NavigationMenu ulClassName="flex space-x-4 justify-center" />
         <main>{children}</main>    
     </div>
   )
 }
 
-export default layout
+export default Layout

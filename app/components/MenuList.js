@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import mockData from '@/data/mockData';
+
+// Obtiene categorías únicas de los datos
+function getUniqueCategories(data) {
+    const categories = data.map(item => item.category);
+    return [...new Set(categories)];
+}
 
 const MenuList = ({ open, handleClose }) => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const categories = getUniqueCategories(mockData);
+
   return (
     <div
       className={`${
@@ -11,24 +21,39 @@ const MenuList = ({ open, handleClose }) => {
       <aside
         className={`${
           open ? 'translate-x-0' : 'translate-x-full'
-        } transition-transform w-48 bg-gray-500`}
+        } transition-transform w-48 bg-red-600`}
       >
-        <div onClick={handleClose} className='text-white text-right p-4 cursor-pointer'>
+        <div onClick={handleClose} className='font-bold text-right p-4 cursor-pointer'>
           x
         </div>
         <nav className='flex flex-col mt-4 gap-3 px-3'>
           <Link  
             href="/products" 
-            className='text-white p-2' 
-            onClick={(e) => {e.stopPropagation(); setOpen(false)}}>
+            className='font-bold p-2' 
+            onClick={(e) => {e.stopPropagation(); handleClose();}}>
             Productos
           </Link>
-          <Link 
-            href="/categories" 
-            className='text-white p-2'
-            onClick={(e) => {e.stopPropagation(); setOpen(false)}}>
-            Categorías
-          </Link>
+          <div className='relative'>
+            <button 
+              className='font-bold p-2' 
+              onClick={(e) => {e.stopPropagation(); setDropdownOpen(!dropdownOpen);}}>
+              Categorías
+            </button>
+            {dropdownOpen && (
+              <ul className='absolute bg-red-400 text-black mt-2 w-full shadow-lg'>
+                {categories.map((category, index) => (
+                  <li key={index} className='p-2 hover:bg-red-600 hover:text-white'>
+                    <Link 
+                      href={`/products/${category.toLowerCase().replace(/ /g, '-')}`} 
+                      className='block' 
+                      onClick={(e) => {e.stopPropagation(); handleClose(); setDropdownOpen(false);}}>
+                      {category}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </nav>
       </aside>
     </div>

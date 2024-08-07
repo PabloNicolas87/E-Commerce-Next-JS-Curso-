@@ -5,7 +5,9 @@ import mockData from '@/data/mockData';
 import ProductList from '@/app/components/ProductList';
 
 const Tipo = () => {
-  const { category } = useParams();
+  const params = useParams();
+  const category = decodeURIComponent(params.category).replace(/-/g, ' ');
+
   const filterData = category === 'all'
     ? mockData
     : mockData.filter(item => item.category.toLowerCase() === category.toLowerCase());
