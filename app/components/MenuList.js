@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const MenuList = ({ open, handleClose }) => {
   return (
@@ -16,15 +17,18 @@ const MenuList = ({ open, handleClose }) => {
           x
         </div>
         <nav className='flex flex-col mt-4 gap-3 px-3'>
-          <a href="#" className='text-white p-2'>
-            Enlace 1
-          </a>
-          <a href="#" className='text-white p-2'>
-            Enlace 2
-          </a>
-          <a href="#" className='text-white p-2'>
-            Enlace 3
-          </a>
+          <Link  
+            href="/products" 
+            className='text-white p-2' 
+            onClick={(e) => {e.stopPropagation(); setOpen(false)}}>
+            Productos
+          </Link>
+          <Link 
+            href="/categories" 
+            className='text-white p-2'
+            onClick={(e) => {e.stopPropagation(); setOpen(false)}}>
+            Categorías
+          </Link>
         </nav>
       </aside>
     </div>
