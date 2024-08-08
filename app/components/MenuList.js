@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import mockData from '@/data/mockData';
 
-// Obtiene categorías únicas de los datos
 function getUniqueCategories(data) {
     const categories = data.map(item => item.category);
     return [...new Set(categories)];
