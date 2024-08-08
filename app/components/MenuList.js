@@ -16,7 +16,7 @@ const MenuList = ({ open, handleClose }) => {
     <div
       className={`${
         open ? 'opacity-100 visible' : 'opacity-0 invisible'
-      } transition-opacity fixed inset-0 bg-black/50 flex justify-end`}
+      } transition-opacity z-40 fixed inset-0 bg-black/50 flex justify-end`}
     >
       <aside
         className={`${

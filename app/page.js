@@ -1,8 +1,8 @@
-
+import MyCarousel from "./components/MyCarousel";
 export default function Home() {
   return (
-      <main className="flex-grow p-3">
-        <h1>Página Principal</h1>
+      <main className="flex-grow">
+        <MyCarousel></MyCarousel>
       </main> 
   );
 }
