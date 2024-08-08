@@ -7,7 +7,7 @@ import Image from 'next/image'
 const NotFound = () => {
   const router = useRouter();
   return (
-    <div className="flex-grow">
+    <div className="flex-grow flex flex-col justify-around items-center py-4">
         <Image src='/error.png' alt='logo' height={100} width={300} />
         <Button onClick={() => router.back()} className='p-3'>Volver a la página anterior</Button>
     </div>

@@ -15,10 +15,10 @@ const NavigationMenu = ({ ulClassName }) => {
     const path = usePathname();
     
     return (
-        <div className='bg-red-400'>
+        <div className='bg-zinc-600'>
             <ul className={`${ulClassName}`}>
                 {categories.map((category, index) => (
-                    <li key={index} className={`text-black font-bold py-4 px-2 ${path === '/products/' + category.toLowerCase() ? 'bg-red-600' : 'no-underline'}`}>
+                    <li key={index} className={`text-black font-bold py-4 px-2 ${path === '/products/' + category.toLowerCase() ? 'bg-zinc-800 text-white' : 'text-black'}`}>
                         <Link href={`/products/${category.toLowerCase()}`}>{category}</Link>
                     </li>
                 ))}

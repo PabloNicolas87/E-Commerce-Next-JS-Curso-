@@ -21,7 +21,7 @@ const MenuList = ({ open, handleClose }) => {
       <aside
         className={`${
           open ? 'translate-x-0' : 'translate-x-full'
-        } transition-transform w-48 bg-red-600`}
+        } transition-transform w-48 bg-zinc-800`}
       >
         <div onClick={handleClose} className='font-bold text-right p-4 cursor-pointer'>
           x
@@ -40,9 +40,9 @@ const MenuList = ({ open, handleClose }) => {
               Categorías
             </button>
             {dropdownOpen && (
-              <ul className='absolute bg-red-400 text-black mt-2 w-full shadow-lg'>
+              <ul className='absolute bg-zinc-600 text-black mt-2 w-full shadow-lg'>
                 {categories.map((category, index) => (
-                  <li key={index} className='p-2 hover:bg-red-600 hover:text-white'>
+                  <li key={index} className='p-2 hover:bg-zinc-800 hover:text-white'>
                     <Link 
                       href={`/products/${category.toLowerCase().replace(/ /g, '-')}`} 
                       className='block' 
