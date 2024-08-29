@@ -1,10 +1,10 @@
 import React from 'react';
 import ProductCard from './ProductCard';
 
-const ProductList = ({ data, category }) => {
+const ProductList = ({ products, category }) => {
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 p-3'>
-      {data.map((product) => (
+      {products.map((product, index) => (
         <ProductCard
           key={product.id}
           id={product.id}

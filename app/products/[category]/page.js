@@ -1,27 +1,27 @@
-'use client'
-import { useParams } from 'next/navigation';
 import React from 'react';
-import mockData from '@/data/mockData';
 import ProductList from '@/app/components/ProductList';
 
-const Tipo = () => {
-  const params = useParams();
-  const category = decodeURIComponent(params.category).replace(/-/g, ' ');
+const getProducts = async (category) => {
+  const data = await fetch(`http://localhost:3000/api/productos/${category}`);
+  const products = await data.json();
+  return products;
+};
 
-  const filterData = category === 'all'
-    ? mockData
-    : mockData.filter(item => item.category.toLowerCase() === category.toLowerCase());
+const Products = async ({ params }) => {
+  const { category } = params;
+  const products = await getProducts(category);
 
   return (
     <main className="flex-grow p-3">
-      <h1>Página de: {category ? category : 'desconocido'}</h1>
+      <h1>Página de Productos {category}</h1>
       <ProductList 
         category={category}
-        data={filterData} 
+        products={products}
       />
-    </main>
+    </main> 
   );
 };
 
-export default Tipo;
+export default Products;
+
 

@@ -27,7 +27,7 @@ const MenuList = ({ open, handleClose }) => {
         </div>
         <nav className='flex flex-col mt-4 gap-3 px-3'>
           <Link  
-            href="/products" 
+            href="/products/all" 
             className='font-bold p-2' 
             onClick={(e) => {e.stopPropagation(); handleClose();}}>
             Productos
