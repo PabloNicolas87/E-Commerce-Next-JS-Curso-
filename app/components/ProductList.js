@@ -2,6 +2,8 @@ import React from 'react';
 import ProductCard from './ProductCard';
 
 const ProductList = ({ products = [], category }) => {
+  console.log('Products received in ProductList:', products); // Verifica los productos
+
 
 
   return (

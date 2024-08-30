@@ -8,6 +8,7 @@ import Button from '@/app/components/Button';
 import { useCartContext } from '@/app/context/cartContext';
 import Image from 'next/image'
 
+
 const ProductDetail = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
@@ -51,8 +52,7 @@ const ProductDetail = () => {
       <div className='max-w overflow-hidden m-4'>
         <div className='px-6 py-4 grid md:grid-cols-2 grid-cols-1'>
             
-            <Image src={product.imageUrl} alt={product.title} height={150} width={150} className='p-4 hidden md:block object-cover w-full' />      
-            <Suspense fallback={<div>Loading...</div>}>
+            <Image src={product.imageUrl} alt={product.title} height={150} width={150} className='p-4 hidden md:block object-cover w-full' />
               <ProductDetails 
                   title={product.title}
                   description={product.description}
@@ -61,14 +61,13 @@ const ProductDetail = () => {
                   imageUrl={product.imageUrl}
                   customClass="md:hidden"
               />  
-            </Suspense>
             <Button children={'Add to Cart'} className='p-3' onclick={() => addToCart(singleProduct)}></Button>
 
         </div>
       </div>
+
     </main>
     );
 }
 
 export default ProductDetail;
-
