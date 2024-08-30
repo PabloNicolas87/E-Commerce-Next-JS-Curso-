@@ -17,7 +17,9 @@ const getProducts = async (category) => {
     }
 
     const querySnap = await getDocs(productQuery);
-    const docs = querySnap.docs.map(doc => doc.data());
+    const docs = querySnap.docs.map(doc => ({
+      ...doc.data()
+    }));
 
     return docs;
   } catch (error) {
@@ -25,6 +27,7 @@ const getProducts = async (category) => {
     return [];
   }
 };
+
 
 
 const Products = async ({ params }) => {

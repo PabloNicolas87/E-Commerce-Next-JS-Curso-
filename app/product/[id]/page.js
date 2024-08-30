@@ -1,11 +1,12 @@
 'use client'
 import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/app/config/firebase';
 import ProductDetails from '@/app/components/ProductDetails';
 import Button from '@/app/components/Button';
 import { useCartContext } from '@/app/context/cartContext';
+import Image from 'next/image'
 
 const ProductDetail = () => {
     const { id } = useParams();
@@ -14,20 +15,26 @@ const ProductDetail = () => {
 
   
     const getProductById = async (id) => {
-        try {
-            const productRef = doc(db, "products", id);
-            const productSnap = await getDoc(productRef);
-            if (productSnap.exists()) {
-                return productSnap.data();
-            } else {
-                console.error("No such document!");
-                return null;
-            }
-        } catch (error) {
-            console.error("Error fetching product:", error);
+
+    try {
+        if (!id) {
             return null;
         }
-    };
+
+        const productRef = doc(db, "products", id);
+
+        const productSnap = await getDoc(productRef);
+
+        if (productSnap.exists()) {
+            return productSnap.data();
+        } else {
+            return null;
+        }
+    } catch (error) {
+        return null;
+    }
+};
+
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -40,17 +47,28 @@ const ProductDetail = () => {
     if (!product) return <div>Loading...</div>;
 
     return (
-        <main className="flex-grow p-3">
-            <ProductDetails 
-                title={product.title}
-                description={product.description}
-                category={product.category}
-                price={product.price}
-                imageUrl={product.imageUrl}
-            />
+      <main className="flex-grow p-3">
+      <div className='max-w overflow-hidden m-4'>
+        <div className='px-6 py-4 grid md:grid-cols-2 grid-cols-1'>
+            
+            <Image src={product.imageUrl} alt={product.title} height={150} width={150} className='p-4 hidden md:block object-cover w-full' />      
+            <Suspense fallback={<div>Loading...</div>}>
+              <ProductDetails 
+                  title={product.title}
+                  description={product.description}
+                  category={product.category}
+                  price={product.price}
+                  imageUrl={product.imageUrl}
+                  customClass="md:hidden"
+              />  
+            </Suspense>
             <Button children={'Add to Cart'} className='p-3' onclick={() => addToCart(singleProduct)}></Button>
-        </main>
+
+        </div>
+      </div>
+    </main>
     );
 }
 
 export default ProductDetail;
+
