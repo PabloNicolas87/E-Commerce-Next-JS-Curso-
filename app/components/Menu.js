@@ -1,7 +1,6 @@
 'use client'
 import React, { useState } from 'react';
 import MenuList from './MenuList';
-import Image from 'next/image';
 import Link from 'next/link';
 import { CiUser, CiShoppingCart, CiMenuBurger } from "react-icons/ci";
 

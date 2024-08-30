@@ -27,19 +27,19 @@ const MenuList = ({ open, handleClose }) => {
           open ? 'translate-x-0' : 'translate-x-full'
         } transition-transform w-48 bg-zinc-800`}
       >
-        <div onClick={handleClose} className='font-bold text-right p-4 cursor-pointer'>
+        <div onClick={handleClose} className='font-bold flex justify-end p-4 cursor-pointer'>
         <CiSquareRemove size={40} color="white"/>
         </div>
         <nav className='flex flex-col mt-4 gap-3 px-3'>
           <Link  
             href="/products/all" 
-            className='font-bold p-2' 
+            className='text-white font-bold p-2' 
             onClick={(e) => {e.stopPropagation(); handleClose();}}>
             Productos
           </Link>
           <div className='relative'>
             <button 
-              className='font-bold p-2' 
+              className='text-white font-bold p-2' 
               onClick={(e) => {e.stopPropagation(); setDropdownOpen(!dropdownOpen);}}>
               Categorías
             </button>
