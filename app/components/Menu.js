@@ -3,6 +3,10 @@ import React, { useState } from 'react';
 import MenuList from './MenuList';
 import Image from 'next/image';
 import Link from 'next/link';
+import { CiUser, CiShoppingCart, CiMenuBurger } from "react-icons/ci";
+
+
+
 
 const Menu = () => {
   const [open, setOpen] = useState(false);
@@ -14,12 +18,15 @@ const Menu = () => {
     <div>
       <div className='flex'>
         <Link href="/user">
-          <Image src='/user.png' alt='user-logo' className="cursor-pointer mx-1" height={40} width={40} />
+            <CiUser size={40} color="white"/>
         </Link>
+
         <Link href="/cart">
-          <Image src='/cart.png' alt='cart-logo' className="cursor-pointer mx-1" height={40} width={40} />
+            <CiShoppingCart size={40} color="white"/>
         </Link>
-        <Image src='/hamb.webp' alt='menu-logo' className="cursor-pointer mx-8" height={40} width={40} onClick={handleOpen} />  
+
+        <CiMenuBurger size={40} color="white" className="cursor-pointer mx-8" onClick={handleOpen} />
+  
       </div>
       
 

@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { getUniqueCategories } from '../utils/firebaseHelpers';
+import { CiSquareRemove } from "react-icons/ci";
+
 
 const MenuList = ({ open, handleClose }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -26,7 +28,7 @@ const MenuList = ({ open, handleClose }) => {
         } transition-transform w-48 bg-zinc-800`}
       >
         <div onClick={handleClose} className='font-bold text-right p-4 cursor-pointer'>
-          x
+        <CiSquareRemove size={40} color="white"/>
         </div>
         <nav className='flex flex-col mt-4 gap-3 px-3'>
           <Link  
