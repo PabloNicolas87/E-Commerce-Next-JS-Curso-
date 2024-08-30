@@ -8,7 +8,7 @@ const getProducts = async (category) => {
     const productRef = collection(db, "products");
     let productQuery;
 
-    const upperCaseCategory = category.toUpperCase(); // Normaliza a mayúsculas si es necesario
+    const upperCaseCategory = category.toUpperCase();
 
     if (upperCaseCategory === 'ALL') {
       productQuery = query(productRef);
@@ -17,7 +17,7 @@ const getProducts = async (category) => {
     }
 
     const querySnap = await getDocs(productQuery);
-    const docs = querySnap.docs.map(doc => ({ id: doc.id, ...doc.data() })); // Incluye el id del documento
+    const docs = querySnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
     return docs;
   } catch (error) {
@@ -28,10 +28,8 @@ const getProducts = async (category) => {
 
 const Products = async ({ params }) => {
   const { category } = params;
-  console.log('Category from params:', category); // Verifica el valor de category
 
   const products = await getProducts(category);
-  console.log('Fetched Products:', products); // Verifica los productos obtenidos
 
   return (
     <main className="flex-grow p-3">
