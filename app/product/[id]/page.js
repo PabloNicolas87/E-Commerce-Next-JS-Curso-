@@ -12,7 +12,7 @@ import Image from 'next/image'
 const ProductDetail = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
-    const {addToCart} = useCartContext();
+    const {addtoCart} = useCartContext();
 
   
     const getProductById = async (id) => {
@@ -62,7 +62,9 @@ const ProductDetail = () => {
                   imageUrl={product.imageUrl}
                   customClass="md:hidden"
               />  
-              <Button children={'Add to Cart'} className='p-3' onclick={() => addToCart(singleProduct)}></Button>
+              <Button className='p-3' onClick={() => addtoCart(product)}>
+                  Add to Cart
+              </Button>
             </div>
               
 
