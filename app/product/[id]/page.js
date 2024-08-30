@@ -1,36 +1,56 @@
 'use client'
-import { useParams } from 'next/navigation'
-import React, { Suspense } from 'react'
-import mockData from '@/data/mockData'
-import Image from 'next/image'
-import ProductDetails from '@/app/components/ProductDetails'
+import { useParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/app/config/firebase';
+import ProductDetails from '@/app/components/ProductDetails';
+import Button from '@/app/components/Button';
+import { useCartContext } from '@/app/context/cartContext';
 
 const ProductDetail = () => {
-    const {id} = useParams();
-    const singleProduct = mockData.find(product => product.id.toString() === id.toString())
-  return (
-    <main className="flex-grow p-3">
-      <div className='max-w overflow-hidden m-4'>
-        <div className='px-6 py-4 grid md:grid-cols-2 grid-cols-1'>
-            
-            <Image src={singleProduct.imageUrl} alt={singleProduct.title} height={150} width={150} className='p-4 hidden md:block object-cover w-full' />      
-            <Suspense fallback={<div>Loading...</div>}>
-              <ProductDetails 
-                  title={singleProduct.title}
-                  description={singleProduct.description}
-                  category={singleProduct.category}
-                  price={singleProduct.price}
-                  imageUrl={singleProduct.imageUrl}
-                  customClass="md:hidden"
-              />  
-            </Suspense>
-            
-            
-        </div>
-      </div>
-      
-    </main>
-  )
+    const { id } = useParams();
+    const [product, setProduct] = useState(null);
+    const {addToCart} = useCartContext();
+
+  
+    const getProductById = async (id) => {
+        try {
+            const productRef = doc(db, "products", id);
+            const productSnap = await getDoc(productRef);
+            if (productSnap.exists()) {
+                return productSnap.data();
+            } else {
+                console.error("No such document!");
+                return null;
+            }
+        } catch (error) {
+            console.error("Error fetching product:", error);
+            return null;
+        }
+    };
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            const fetchedProduct = await getProductById(id);
+            setProduct(fetchedProduct);
+        };
+        fetchProduct();
+    }, [id]);
+
+    if (!product) return <div>Loading...</div>;
+
+    return (
+        <main className="flex-grow p-3">
+            <ProductDetails 
+                title={product.title}
+                description={product.description}
+                category={product.category}
+                price={product.price}
+                imageUrl={product.imageUrl}
+            />
+            <Button children={'Add to Cart'} className='p-3' onclick={() => addToCart(singleProduct)}></Button>
+        </main>
+    );
 }
 
-export default ProductDetail
+export default ProductDetail;

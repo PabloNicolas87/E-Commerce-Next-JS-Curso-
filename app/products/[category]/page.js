@@ -1,6 +1,6 @@
 import React from 'react';
 import ProductList from '@/app/components/ProductList';
-import {collection, getDocs, query, where} from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/app/config/firebase';
 
 const getProducts = async (category) => {
@@ -8,14 +8,17 @@ const getProducts = async (category) => {
     const productRef = collection(db, "products");
     let productQuery;
 
-    if(category === 'all') {
+    const lowerCaseCategory = category.toLowerCase();
+
+    if (lowerCaseCategory === 'all') {
       productQuery = query(productRef);
     } else {
-      productQuery = query(productRef, where('category', '==', category));
+      productQuery = query(productRef, where('category', '==', lowerCaseCategory));
     }
 
     const querySnap = await getDocs(productQuery);
     const docs = querySnap.docs.map(doc => doc.data());
+
     return docs;
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -23,8 +26,10 @@ const getProducts = async (category) => {
   }
 };
 
+
 const Products = async ({ params }) => {
   const { category } = params;
+
   const products = await getProducts(category);
 
   return (
@@ -39,4 +44,3 @@ const Products = async ({ params }) => {
 };
 
 export default Products;
-
