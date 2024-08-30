@@ -51,23 +51,22 @@ const ProductDetail = () => {
       <main className="flex-grow p-3">
       <div className='max-w overflow-hidden m-4'>
         <div className='px-6 py-4 grid md:grid-cols-2 grid-cols-1'>
-            
-            <Image src={product.imageUrl} alt={product.title} height={150} width={150} className='p-4 hidden md:block object-cover w-full' />
-            <div>
-              <ProductDetails 
-                  title={product.title}
-                  description={product.description}
-                  category={product.category}
-                  price={product.price}
-                  imageUrl={product.imageUrl}
-                  customClass="md:hidden"
-              />  
-              <Button className='p-3' onClick={() => addtoCart(product)}>
-                  Add to Cart
-              </Button>
-            </div>
-              
-
+            <Suspense>
+                <Image src={product.imageUrl} alt={product.title} height={150} width={150} className='p-4 hidden md:block object-cover w-full' />
+                <div>
+                <ProductDetails 
+                    title={product.title}
+                    description={product.description}
+                    category={product.category}
+                    price={product.price}
+                    imageUrl={product.imageUrl}
+                    customClass="md:hidden"
+                />  
+                <Button className='p-3' onClick={() => addtoCart(product)}>
+                    Add to Cart
+                </Button>
+                </div>    
+            </Suspense>
         </div>
       </div>
 
