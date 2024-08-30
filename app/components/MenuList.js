@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
 import Link from 'next/link';
-import mockData from '@/data/mockData';
-
-function getUniqueCategories(data) {
-    const categories = data.map(item => item.category);
-    return [...new Set(categories)];
-}
+import { useEffect, useState } from 'react';
+import { getUniqueCategories } from '../utils/firebaseHelpers';
 
 const MenuList = ({ open, handleClose }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const categories = getUniqueCategories(mockData);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const uniqueCategories = await getUniqueCategories();
+      setCategories(uniqueCategories);
+    };
+    fetchCategories();
+  }, []);
 
   return (
     <div

@@ -8,16 +8,19 @@ const getProducts = async (category) => {
     const productRef = collection(db, "products");
     let productQuery;
 
-    const upperCaseCategory = category.toUpperCase();
+    const lowerCaseCategory = category.toLowerCase();
 
-    if (upperCaseCategory === 'ALL') {
+    if (lowerCaseCategory === 'all') {
       productQuery = query(productRef);
     } else {
-      productQuery = query(productRef, where('category', '==', upperCaseCategory));
+      productQuery = query(productRef, where('category', '==', lowerCaseCategory));
     }
 
     const querySnap = await getDocs(productQuery);
-    const docs = querySnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const docs = querySnap.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
 
     return docs;
   } catch (error) {
@@ -25,6 +28,8 @@ const getProducts = async (category) => {
     return [];
   }
 };
+
+
 
 const Products = async ({ params }) => {
   const { category } = params;
