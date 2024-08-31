@@ -24,7 +24,7 @@ const Menu = () => {
             <CiShoppingCart size={40} color="white"/>
         </Link>
 
-        <CiMenuBurger size={40} color="white" className="cursor-pointer mx-8" onClick={handleOpen} />
+        <CiMenuBurger size={40} color="white" className="cursor-pointer ms-8" onClick={handleOpen} />
   
       </div>
       

@@ -2,11 +2,11 @@ import React from 'react';
 import ProductList from '@/app/components/ProductList';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/app/config/firebase';
+import Link from 'next/link';
 
 const getProducts = async (category) => {
   try {
-    // Simular un retraso de 3 segundos
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     const productRef = collection(db, "products");
     let productQuery;
@@ -41,8 +41,17 @@ const Products = async ({ params }) => {
   const products = await getProducts(category);
 
   return (
-    <main className="flex-grow p-3">
-      <h1>Página de Productos {category}</h1>
+    <main className="container mx-auto flex-grow my-10">
+      <h1>
+        Página de 
+        <Link className="font-semibold" href="/products/all"> Productos</Link>
+        {category !== 'all' && (
+          <> 
+            {' / '}
+            <Link className="font-semibold capitalize" href={`/products/${category}`}>{category}</Link>
+          </>
+        )}
+      </h1>
       <ProductList 
         category={category}
         products={products || []}

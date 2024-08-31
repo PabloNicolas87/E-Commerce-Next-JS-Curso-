@@ -6,7 +6,7 @@ const Cart = () => {
   const { cart } = useCartContext();
 
   return (
-    <main className="flex-grow p-3">
+    <main className="container mx-auto flex-grow my-10">
       <h1>Página de Cart</h1>
       {cart.map((item, index) => (
         <h2 key={index}>{item.title} - ${item.price}</h2>

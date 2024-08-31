@@ -12,7 +12,7 @@ const ProductDetails = ({ title, description, category, price, imageUrl, customC
 
         <div className='py-4 flex'>
             <p className='pr-2'>Category:</p>
-            <span className='inline-block bg-gray-200 rounded-full px-5 py-1 text-sm font-semibold text-gray-700 whitespace-nowrap'>{category}</span>
+            <span className='inline-block bg-gray-200 rounded-full px-5 py-1 text-sm font-semibold text-gray-700 whitespace-nowrap capitalize'>{category}</span>
         </div>
 
         <div className='py-4 flex'>
