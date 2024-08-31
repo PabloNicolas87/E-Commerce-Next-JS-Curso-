@@ -5,6 +5,9 @@ import { db } from '@/app/config/firebase';
 
 const getProducts = async (category) => {
   try {
+    // Simular un retraso de 3 segundos
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
     const productRef = collection(db, "products");
     let productQuery;
 
@@ -28,6 +31,7 @@ const getProducts = async (category) => {
     return [];
   }
 };
+
 
 
 

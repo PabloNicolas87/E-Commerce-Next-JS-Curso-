@@ -1,9 +1,10 @@
 import React from 'react'
+import SimpleSpinner from '@/app/components/spinner/Spinner'
 
-const Loading = () => {
+const loading = () => {
   return (
-    <div className='flex flex-grow justify-center text-5xl'>Loading...</div>
+    <SimpleSpinner></SimpleSpinner>
   )
 }
 
-export default Loading
+export default loading

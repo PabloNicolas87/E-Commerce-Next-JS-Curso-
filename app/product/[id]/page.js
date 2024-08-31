@@ -7,6 +7,7 @@ import ProductDetails from '@/app/components/ProductDetails';
 import Button from '@/app/components/Button';
 import { useCartContext } from '@/app/context/cartContext';
 import Image from 'next/image'
+import SimpleSpinner from '@/app/components/spinner/Spinner';
 
 
 const ProductDetail = () => {
@@ -45,7 +46,7 @@ const ProductDetail = () => {
         fetchProduct();
     }, [id]);
 
-    if (!product) return <div>Loading...</div>;
+    if (!product) return <SimpleSpinner></SimpleSpinner>;
 
     return (
       <main className="flex-grow p-3">

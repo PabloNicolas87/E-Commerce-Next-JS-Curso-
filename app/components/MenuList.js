@@ -44,9 +44,9 @@ const MenuList = ({ open, handleClose }) => {
               Categorías
             </button>
             {dropdownOpen && (
-              <ul className='absolute bg-zinc-600 text-black mt-2 w-full shadow-lg'>
+              <ul className='absolute bg-zinc-700 text-black mt-2 w-full shadow-lg'>
                 {categories.map((category, index) => (
-                  <li key={index} className='p-2 hover:bg-zinc-800 hover:text-white'>
+                  <li key={index} className='p-2 capitalize hover:bg-zinc-800 hover:text-white'>
                     <Link 
                       href={`/products/${category.toLowerCase().replace(/ /g, '-')}`} 
                       className='block' 

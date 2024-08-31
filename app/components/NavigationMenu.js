@@ -27,7 +27,7 @@ const NavigationMenu = ({ ulClassName }) => {
           return (
             <li
               key={index}
-              className={`font-bold py-4 px-2 ${isActive ? 'bg-zinc-800 text-white' : 'text-black'}`}
+              className={`font-bold py-4 px-2 capitalize ${isActive ? 'bg-zinc-800 text-white' : 'text-white'}`}
             >
               <Link href={`/products/${categorySlug}`}>{category}</Link>
             </li>
