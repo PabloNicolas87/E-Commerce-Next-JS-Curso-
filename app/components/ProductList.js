@@ -15,7 +15,6 @@ const ProductList = ({ products = [], category }) => {
           description={product.description}
           category={product.category}
           price={product.price}
-          imageUrl={product.imageUrl}
         />
       ))}
     </div>

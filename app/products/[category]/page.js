@@ -1,46 +1,16 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ProductList from '@/app/components/ProductList';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '@/app/config/firebase';
 import Link from 'next/link';
+import { getProductsByCategory } from '@/app/utils/firebaseHelpers';
+import SimpleSpinner from '@/app/components/spinner/Spinner';
 
-const getProducts = async (category) => {
-  try {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    const productRef = collection(db, "products");
-    let productQuery;
-
-    const lowerCaseCategory = category.toLowerCase();
-
-    if (lowerCaseCategory === 'all') {
-      productQuery = query(productRef);
-    } else {
-      productQuery = query(productRef, where('category', '==', lowerCaseCategory));
-    }
-
-    const querySnap = await getDocs(productQuery);
-    const docs = querySnap.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-
-    return docs;
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    return [];
-  }
-};
-
-
-
-
-const Products = async ({ params }) => {
+const ProductsPage = async ({ params }) => {
   const { category } = params;
 
-  const products = await getProducts(category);
+  const products = await getProductsByCategory(category);
 
   return (
+    <Suspense fallback={<SimpleSpinner />}>
     <main className="container mx-auto flex-grow my-10">
       <h1>
         Página de 
@@ -56,8 +26,9 @@ const Products = async ({ params }) => {
         category={category}
         products={products || []}
       />
-    </main> 
+    </main>
+    </Suspense>
   );
 };
 
-export default Products;
+export default ProductsPage;

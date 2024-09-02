@@ -1,13 +1,19 @@
 import React from 'react';
-import Image from 'next/image';
 
-const ProductDetails = ({ title, description, category, price, imageUrl, customClass = '' }) => {
+const ProductDetails = ({ title, description, category, price, customClass= '', imageUrl}) => {
   return (
     <div className='px-6 py-4'>
-        <div className='font-bold text-xl my-3'>{title}</div>
 
-        <Image src={imageUrl} alt={title} height={150} width={150} className={`${customClass} object-cover w-full`} />      
-        
+        <div className={`${customClass}`}>
+          <div className='font-bold text-xl my-3'>{title}</div>
+        </div>
+
+        {imageUrl && (
+            <div className='my-3'>
+                <img src={imageUrl} alt={title} className='w-full h-64 object-contain' />
+            </div>
+        )}
+
         <p className='text-gray-700 text-base my-3 min-h-24'>{description}</p>
 
         <div className='py-4 flex'>

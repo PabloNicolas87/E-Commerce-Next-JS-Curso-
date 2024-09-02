@@ -31,7 +31,6 @@ const MyCarousel = () => {
       pagination={{ clickable: true }}
       spaceBetween={50}
       slidesPerView={1}
-      loop={true}
       autoplay={{
         delay: 5000,
         disableOnInteraction: false,

@@ -1,77 +1,62 @@
-'use client'
+'use client';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import React, { Suspense, useEffect, useState } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '@/app/config/firebase';
 import ProductDetails from '@/app/components/ProductDetails';
 import Button from '@/app/components/Button';
-import { useCartContext } from '@/app/context/cartContext';
-import Image from 'next/image'
 import SimpleSpinner from '@/app/components/spinner/Spinner';
-
+import ProductImageGallery from '@/app/components/ProductImageGallery';
+import { getProductById, fetchProductImages } from '@/app/utils/firebaseHelpers';
+import { useCartContext } from '@/app/context/cartContext';
 
 const ProductDetail = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
-    const {addtoCart} = useCartContext();
-
-  
-    const getProductById = async (id) => {
-
-    try {
-        if (!id) {
-            return null;
-        }
-
-        const productRef = doc(db, "products", id);
-
-        const productSnap = await getDoc(productRef);
-
-        if (productSnap.exists()) {
-            return productSnap.data();
-        } else {
-            return null;
-        }
-    } catch (error) {
-        return null;
-    }
-};
-
+    const [images, setImages] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const { addtoCart } = useCartContext();
 
     useEffect(() => {
-        const fetchProduct = async () => {
+        const fetchProductData = async () => {
+            setLoading(true);
             const fetchedProduct = await getProductById(id);
+            const fetchedImages = await fetchProductImages(id);
             setProduct(fetchedProduct);
+            setImages(fetchedImages);
+            setLoading(false);
         };
-        fetchProduct();
+
+        fetchProductData();
     }, [id]);
 
-    if (!product) return <SimpleSpinner></SimpleSpinner>;
+    if (loading) {
+        return <SimpleSpinner />;
+    }
 
     return (
-      <main className="container my-10 mx-auto flex-grow">
-        <div className='max-w overflow-hidden m-4'>
-            <div className='grid md:grid-cols-2 grid-cols-1'>
-                <Suspense>
-                    <Image src={product.imageUrl} alt={product.title} height={150} width={150} className='p-4 hidden md:block object-cover w-full' />
-                    <div>
-                    <ProductDetails 
-                        title={product.title}
-                        description={product.description}
-                        category={product.category}
-                        price={product.price}
-                        imageUrl={product.imageUrl}
-                        customClass="md:hidden"
-                    />
+        <main className="container my-10 mx-auto flex-grow">
+            <div className='max-w overflow-hidden m-4'>
+                <div className='grid md:grid-cols-2 grid-cols-1'>
                     
-                    <Button className='ms-6 px-6 py-4' onClick={() => addtoCart(product)}>
-                        Add to Cart
-                    </Button>
-                    </div>    
-                </Suspense>
+                    <div>
+                        <div className='block md:hidden font-bold text-xl my-3'>{product.title}</div>
+                        <ProductImageGallery images={images} />
+                    </div>
+
+                    <div>
+                        <ProductDetails 
+                            title={product.title}
+                            description={product.description}
+                            category={product.category}
+                            price={product.price}
+                            customClass="hidden md:block"
+                        />
+                        <Button className='ms-6 px-6 py-4' onClick={() => addtoCart(product)}>
+                            Add to Cart
+                        </Button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </main>
+        </main>
     );
 }
 
