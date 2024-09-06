@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FaRegEdit } from "react-icons/fa";
 import DeleteProductBtn from "./DeleteProductBtn";
 import { getProductsByCategory } from "@/app/utils/firebaseHelpers";
+import ProductImageCard from "../ProductImageCard";
 
 
 
@@ -62,18 +63,7 @@ const ProductsTable = async () => {
               <td className="p-2 text-center">{item.inStock}</td>
               <td className="p-2 text-center">{item.category}</td>
               <td className="p-2 text-center">
-                {item.image ? (
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    width={80}
-                    height={80}
-                  />
-                ) : (
-                  <>
-                    <p className="text-gray">no image </p>
-                  </>
-                )}
+                <ProductImageCard id={item.id} width={60} height={60} />
               </td>
               <td className="p-2 text-center">{item.id}</td>
               <td className="p-2 truncate max-w-prose">{item.description}</td>

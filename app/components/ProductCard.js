@@ -19,13 +19,13 @@ const ProductCard = ({ title, description, price, category, id }) => {
   }, [id]);
 
   return (
-    <Link className='max-w overflow-hidden m-3 shadow rounded-md' href={`/product/${id}`}>
+    <Link className='max-w overflow-hidden m-2 shadow rounded-md' href={`/product/${id}`}>
       <ProductDetails 
         title={title}
         description={description}
         category={category}
         price={price}
-        imageUrl={imageUrl}
+        id={id}
       />
     </Link>
   );

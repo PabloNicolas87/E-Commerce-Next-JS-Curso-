@@ -23,8 +23,8 @@ const ProductImageGallery = ({ images }) => {
                     <Image 
                         src={selectedImage} 
                         alt="Selected Product Image" 
-                        height={400} 
-                        width={400} 
+                        height={500} 
+                        width={500} 
                         className='object-contain w-40' 
                         priority
                     />
