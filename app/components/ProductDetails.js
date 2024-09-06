@@ -1,4 +1,6 @@
 import React from 'react';
+import Image from 'next/image';
+
 
 const ProductDetails = ({ title, description, category, price, customClass= '', imageUrl}) => {
   return (
@@ -9,10 +11,17 @@ const ProductDetails = ({ title, description, category, price, customClass= '', 
         </div>
 
         {imageUrl && (
-            <div className='my-3'>
-                <img src={imageUrl} alt={title} className='w-full h-64 object-contain' />
-            </div>
+          <div className='my-3'>
+              <Image
+                  src={imageUrl}
+                  alt={title}
+                  width={500}  
+                  height={256} 
+                  className='w-full h-64 object-contain'
+              />
+          </div>
         )}
+
 
         <p className='text-gray-700 text-base my-3 min-h-24'>{description}</p>
 
