@@ -3,7 +3,7 @@ import { useState } from "react";
 import { IoPersonOutline, IoPerson } from "react-icons/io5";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { FcGoogle } from "react-icons/fc";
-import { useAuthContext } from "@/app/context/AuthContext";
+import { useAuthContext } from "@/app/context/authContext";
 
 const LoginForm = () => {
   const { registerUser, loginUser, googleLogin } = useAuthContext();

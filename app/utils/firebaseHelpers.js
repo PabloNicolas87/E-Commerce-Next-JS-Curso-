@@ -1,6 +1,7 @@
-import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
-import { ref, listAll, getDownloadURL } from "firebase/storage";
+import { doc, getDoc, collection, getDocs, query, where, setDoc } from "firebase/firestore";
+import { ref, listAll, getDownloadURL, uploadBytes } from "firebase/storage";
 import { db, storage } from "@/app/config/firebase";
+import { v4 as uuidv4 } from "uuid";
 
 // Listado de categorías
 export async function getUniqueCategories() {
@@ -72,3 +73,42 @@ export async function getProductsByCategory(category) {
     return [];
   }
 }
+
+
+
+
+
+
+export const uploadImages = async (productId, files) => {
+  const imageUrls = [];
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    const imageNumber = String(i + 1).padStart(2, "0"); // Genera "01", "02", "03", etc.
+    const imageName = `${productId}${imageNumber}`; // Nombre de la imagen, ejemplo: id+01
+
+    const storageRef = ref(storage, `/product-images/${productId}/${imageName}`); // Crear la referencia en Storage
+
+    const fileSnapshot = await uploadBytes(storageRef, file); // Sube cada archivo
+    const fileURL = await getDownloadURL(fileSnapshot.ref); // Obtiene la URL de cada imagen subida
+    imageUrls.push(fileURL); // Agrega la URL al array de URLs
+  }
+
+  return imageUrls; // Devuelve las URLs de las imágenes
+};
+
+// Función para crear el producto en Firestore
+export const createProduct = async (id, values) => {
+  const price = parseFloat(values.price);
+  const inStock = parseInt(values.inStock);
+
+  const docRef = doc(db, "products", id); // Usamos el mismo ID para Firestore y Storage
+
+  return setDoc(docRef, {
+    ...values,
+    id,
+    price,
+    inStock,
+    images: values.images, // Guarda la lista de URLs de las imágenes
+  });
+};
