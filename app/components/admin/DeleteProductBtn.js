@@ -13,26 +13,24 @@ const DeleteProductBtn = ({ id }) => {
     try {
       const fileList = await listAll(folderRef);
       const deletionPromises = fileList.items.map((fileRef) => deleteObject(fileRef));
-      console.log(`All images in folder 'product-images/${productId}' deleted successfully.`);
     } catch (error) {
-      console.error("Error deleting product images:", error);
     }
   };
 
   const deleteProduct = () => {
     Swal.fire({
       icon: "warning",
-      title: "Do you want to delete this product?",
-      text: "Once deleted, you won't be able to recover this product.",
-      confirmButtonText: "Delete",
+      title: "Deseas eliminar el producto?",
+      text: "Una vez eliminado, no podrás volver atrás.",
+      confirmButtonText: "Borrar",
       confirmButtonColor: "#d90429",
       showCancelButton: true,
     }).then(async (result) => {
       if (result.isConfirmed) {
         Swal.fire({
           icon: "success",
-          title: "Deleted!",
-          text: "The product has been deleted successfully",
+          title: "Producto Borrado!",
+          text: "El producto ha sido borrado exitosamente!",
           iconColor: "#457b9d",
           timer: 2500,
           timerProgressBar: true,
@@ -42,7 +40,7 @@ const DeleteProductBtn = ({ id }) => {
           await deleteDoc(doc(db, "products", id));
           await deleteProductImages(id);
         } catch (error) {
-          console.error("Error deleting product:", error);
+          console.error("Error borrando poroducto:", error);
         }
       }
     });

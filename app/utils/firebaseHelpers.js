@@ -1,4 +1,4 @@
-import { doc, collection, getDocs, query, where, setDoc } from "firebase/firestore";
+import { doc, collection, getDocs, query, where, setDoc, updateDoc } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { db, storage } from "@/app/config/firebase";
 
@@ -10,7 +10,7 @@ export async function getUniqueCategories() {
     const uniqueCategories = [...new Set(categoriesList)];
     return uniqueCategories;
   } catch (error) {
-    console.error("Error fetching categories: ", error);
+    console.error("Error en la búsqueda de categorías: ", error);
     return [];
   }
 }
@@ -37,7 +37,7 @@ export async function getProductsByCategory(category) {
 
     return docs;
   } catch (error) {
-    console.error("Error fetching products:", error);
+    console.error("Error en la búsqueda de productos:", error);
     return [];
   }
 }
@@ -65,12 +65,33 @@ export const uploadImages = async (productId, files) => {
 export const createProduct = async (id, values) => {
   const price = parseFloat(values.price);
   const inStock = parseInt(values.inStock);
-
   const docRef = doc(db, "products", id);
 
   return setDoc(docRef, {
     ...values,
     id,
+    price,
+    inStock,
+    images: values.images,
+  });
+};
+
+//Obtengo los productos por su ID para traerlos en el edit
+export const getProductById = async (id) => {
+  const productRef = collection(db, "products");
+  const q = query(productRef, where("id", "==", id));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs[0].data();
+}
+
+// Actualización de producto
+export const updateProduct = async (id, values) => {
+  const price = parseFloat(values.price);
+  const inStock = parseInt(values.inStock);
+  const docRef = doc(db, "products", id);
+
+  return updateDoc(docRef, {
+    ...values,
     price,
     inStock,
     images: values.images,

@@ -28,12 +28,12 @@ const ProductDetail = () => {
                     setProduct(fetchedProduct);
                     setImages(fetchedProduct.images || []);
                 } else {
-                    console.error("No such document!");
+                    console.error("No existe el documento.");
                     setProduct(null);
                     setImages([]);
                 }
             } catch (error) {
-                console.error("Error fetching product:", error);
+                console.error(error);
                 setProduct(null);
                 setImages([]);
             }

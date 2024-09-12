@@ -1,10 +1,10 @@
 "use client";
-import { useState } from "react";
-import { uploadImages, createProduct } from "@/app/utils/firebaseHelpers";
-import { v4 as uuidv4 } from "uuid";
+import { useState, useEffect } from "react";
+import { uploadImages, createProduct, updateProduct } from "@/app/utils/firebaseHelpers";
 import Swal from "sweetalert2";
+import { v4 as uuidv4 } from "uuid";
 
-const CreateForm = () => {
+const CreateForm = ({ product }) => {
   const [values, setValues] = useState({
     title: "",
     description: "",
@@ -16,13 +16,28 @@ const CreateForm = () => {
 
   const [files, setFiles] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (product) {
+      setValues({
+        title: product.title || "",
+        description: product.description || "",
+        inStock: product.inStock || 100,
+        price: product.price || 0,
+        category: product.category || "",
+        images: product.images || [],
+      });
+      setIsEditing(true);
+    }
+  }, [product]);
 
   const showSuccessAlert = () => {
     Swal.fire({
       position: "center",
       icon: "success",
       iconColor: "#457b9d",
-      title: "Product created!",
+      title: isEditing ? "Producto Actualizado!" : "Producto Creado!",
       showConfirmButton: false,
       timer: 1500,
     });
@@ -39,11 +54,11 @@ const CreateForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (values.title.length > 20) {
+    if (values.title.length > 40) {
       Swal.fire({
         icon: "warning",
-        title: "Name Limit Exceeded",
-        text: "The name cannot exceed 20 characters.",
+        title: "Limite excedido",
+        text: "El nombre no puede exceder los 40 caracteres.",
         timer: 3000,
         timerProgressBar: true,
         showConfirmButton: false,
@@ -53,12 +68,18 @@ const CreateForm = () => {
 
     setIsSubmitting(true);
 
-    const productId = uuidv4();
-
     try {
-      const imageUrls = await uploadImages(productId, files);
+      let imageUrls = values.images;
+      if (files.length > 0) {
+        imageUrls = await uploadImages(uuidv4(), files);
+      }
       
-      await createProduct(productId, { ...values, images: imageUrls });
+      if (isEditing) {
+        await updateProduct(product.id, { ...values, images: imageUrls });
+      } else {
+        const productId = uuidv4();
+        await createProduct(productId, { ...values, images: imageUrls });
+      }
 
       showSuccessAlert();
 
@@ -72,11 +93,11 @@ const CreateForm = () => {
       });
       setFiles([]);
     } catch (error) {
-      console.error("Error creating product:", error);
+      console.error("Error creando producto:", error);
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "There was an error creating the product. Please try again.",
+        text: "Hubo un error al crear el producto. Intenta nuevamente.",
       });
     } finally {
       setIsSubmitting(false);
@@ -85,9 +106,11 @@ const CreateForm = () => {
 
   return (
     <div className="my-16 p-8 mx-3 sm:mx-20 lg:mx-40 xl:mx-52 2xl:mx-96 select-none bg-white rounded">
-      <h2 className="text-cyan font-semibold text-2xl pb-4">Create Product</h2>
+      <h2 className="text-cyan font-semibold text-2xl pb-4">
+        {isEditing ? "Editar Producto" : "Crear Producto"}
+      </h2>
       <form onSubmit={handleSubmit} className="px-20">
-        <label className="text-black">Name: </label>
+        <label className="text-black">Nombre: </label>
         <input
           type="text"
           value={values.title}
@@ -97,17 +120,16 @@ const CreateForm = () => {
           onChange={handleChange}
         />
 
-        <label className="text-black">Images: </label>
+        <label className="text-black">Imagenes: </label>
         <input
           type="file"
-          required
           className="p-2 rounded w-full border border-cyan block mb-4"
           name="images"
           multiple
           onChange={handleImageChange}
         />
 
-        <label className="text-black">Category: </label>
+        <label className="text-black">Categoría: </label>
         <select
           className="p-2 rounded w-full border border-cyan block mb-4"
           name="category"
@@ -116,14 +138,14 @@ const CreateForm = () => {
           value={values.category}
         >
           <option value="" disabled>
-            Select a category
+            Selecciona la Categoría
           </option>
           <option value="monitors">Monitors</option>
           <option value="keyboards">Keyboards</option>
           <option value="mouses">Mouses</option>
         </select>
 
-        <label className="text-black">Price: </label>
+        <label className="text-black">Precio: </label>
         <input
           type="number"
           value={values.price}
@@ -143,7 +165,7 @@ const CreateForm = () => {
           onChange={handleChange}
         />
 
-        <label className="text-black">Description: </label>
+        <label className="text-black">Descripción: </label>
         <input
           type="text"
           value={values.description}
@@ -157,7 +179,7 @@ const CreateForm = () => {
           className="bg-cyan-500 rounded-md py-3 px-6 sm:px-10 text-white shadow-md"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Creating..." : "Create"}
+          {isSubmitting ? (isEditing ? "Actualizando..." : "Creando...") : (isEditing ? "Actualizar" : "Crear")}
         </button>
       </form>
     </div>
