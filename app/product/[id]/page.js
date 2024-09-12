@@ -5,7 +5,8 @@ import ProductDetails from '@/app/components/ProductDetails';
 import Button from '@/app/components/Button';
 import SimpleSpinner from '@/app/components/spinner/Spinner';
 import ProductImageGallery from '@/app/components/ProductImageGallery';
-import { getProductById, fetchProductImages } from '@/app/utils/firebaseHelpers';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/app/config/firebase';
 import { useCartContext } from '@/app/context/cartContext';
 
 const ProductDetail = () => {
@@ -18,10 +19,24 @@ const ProductDetail = () => {
     useEffect(() => {
         const fetchProductData = async () => {
             setLoading(true);
-            const fetchedProduct = await getProductById(id);
-            const fetchedImages = await fetchProductImages(id);
-            setProduct(fetchedProduct);
-            setImages(fetchedImages);
+            try {
+                const productRef = doc(db, "products", id);
+                const productSnap = await getDoc(productRef);
+
+                if (productSnap.exists()) {
+                    const fetchedProduct = productSnap.data();
+                    setProduct(fetchedProduct);
+                    setImages(fetchedProduct.images || []);
+                } else {
+                    console.error("No such document!");
+                    setProduct(null);
+                    setImages([]);
+                }
+            } catch (error) {
+                console.error("Error fetching product:", error);
+                setProduct(null);
+                setImages([]);
+            }
             setLoading(false);
         };
 
@@ -38,16 +53,17 @@ const ProductDetail = () => {
                 <div className='grid md:grid-cols-2 grid-cols-1'>
                     
                     <div>
-                        <div className='block md:hidden font-bold text-xl my-3'>{product.title}</div>
+                        <div className='block md:hidden font-bold text-xl my-3'>{product?.title}</div>
                         <ProductImageGallery images={images} />
                     </div>
 
                     <div>
                         <ProductDetails 
-                            title={product.title}
-                            description={product.description}
-                            category={product.category}
-                            price={product.price}
+                            title={product?.title}
+                            description={product?.description}
+                            category={product?.category}
+                            price={product?.price}
+                            images={images}
                             customClass="hidden md:block"
                         />
                         <Button className='ms-6 px-6 py-4' onClick={() => addtoCart(product)}>

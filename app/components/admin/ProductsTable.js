@@ -1,11 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { FaRegEdit } from "react-icons/fa";
 import DeleteProductBtn from "./DeleteProductBtn";
 import { getProductsByCategory } from "@/app/utils/firebaseHelpers";
 import ProductImageCard from "../ProductImageCard";
-
-
 
 const ProductsTable = async () => {
   const items = await getProductsByCategory('all');
@@ -29,41 +26,29 @@ const ProductsTable = async () => {
       <table className="w-full mt-5 rounded-md bg-white text-xs lg:text-sm text-left text-gray ">
         <thead className="text-base text-gray uppercase ">
           <tr>
-            <th scope="col" className="px-3 py-2">
-              Name
-            </th>
-            <th scope="col" className="px-3 py-2 text-center">
-              Price
-            </th>
-            <th scope="col" className="px-3 py-2 text-center">
-              In stock
-            </th>
-            <th scope="col" className="px-3 py-2 text-center">
-              Type
-            </th>
-            <th scope="col" className="px-3 py-2 text-center">
-              Image
-            </th>
-            <th scope="col" className="px-3 py-2 text-center">
-              Id
-            </th>
-            <th scope="col" className="px-3 py-2">
-              Description
-            </th>
-            <th scope="col" className="px-3 py-2 text-center">
-              Actions
-            </th>
+            <th scope="col" className="px-3 py-2">Name</th>
+            <th scope="col" className="px-3 py-2 text-center">Price</th>
+            <th scope="col" className="px-3 py-2 text-center">In stock</th>
+            <th scope="col" className="px-3 py-2 text-center">Type</th>
+            <th scope="col" className="px-3 py-2 text-center">Image</th>
+            <th scope="col" className="px-3 py-2 text-center">Id</th>
+            <th scope="col" className="px-3 py-2">Description</th>
+            <th scope="col" className="px-3 py-2 text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
           {items.map((item) => (
             <tr key={item.id}>
-              <td className="p-2 truncate"> {item.title}</td>
+              <td className="p-2 truncate">{item.title}</td>
               <td className="p-2 text-center">$ {item.price}</td>
               <td className="p-2 text-center">{item.inStock}</td>
               <td className="p-2 text-center">{item.category}</td>
               <td className="p-2 text-center">
-                <ProductImageCard id={item.id} width={60} height={60} />
+                <ProductImageCard
+                  imageUrls={item.images} // Proporciona el array de URLs de imágenes
+                  width={60}
+                  height={60}
+                />
               </td>
               <td className="p-2 text-center">{item.id}</td>
               <td className="p-2 truncate max-w-prose">{item.description}</td>

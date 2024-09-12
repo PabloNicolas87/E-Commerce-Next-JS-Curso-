@@ -1,15 +1,21 @@
+'use client';
 import React from 'react';
 import ProductImageCard from './ProductImageCard';
+import { usePathname } from 'next/navigation';
 
-const ProductDetails = ({ title, description, category, price, customClass = '', id }) => {
+const ProductDetails = ({ title, description, category, price, customClass = '', images = [] }) => {
+  const pathname = usePathname();
+
+  const isProductPage = pathname.includes('/product/');
+
   return (
     <div className='px-4 py-4'>
       <div className={`${customClass}`}>
         <div className='font-bold text-xl my-3 text-center'>{title}</div>
       </div>
 
-      <div className='my-3 d-flex '>
-        <ProductImageCard id={id} width={200} height={300} /> {/* Cambia el tamaño aquí si es necesario */}
+      <div className={`my-3 d-flex ${isProductPage ? 'hidden' : ''}`}>
+        <ProductImageCard imageUrls={images} width={200} height={300} />
       </div>
 
       <p className='text-gray-700 text-base my-3 min-h-24'>{description}</p>

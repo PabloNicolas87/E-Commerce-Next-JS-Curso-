@@ -3,8 +3,6 @@ import ProductCard from './ProductCard';
 
 const ProductList = ({ products = [], category }) => {
 
-
-
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 p-3'>
       {products.map((product) => (
@@ -15,6 +13,7 @@ const ProductList = ({ products = [], category }) => {
           description={product.description}
           category={product.category}
           price={product.price}
+          imageUrls={product.images}
         />
       ))}
     </div>
@@ -22,4 +21,3 @@ const ProductList = ({ products = [], category }) => {
 };
 
 export default ProductList;
-

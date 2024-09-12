@@ -11,7 +11,7 @@ const CreateForm = () => {
     inStock: 100,
     price: 0,
     category: "",
-    images: [], // Usamos un array para múltiples imágenes
+    images: [],
   });
 
   const [files, setFiles] = useState([]); // Para almacenar las imágenes seleccionadas
