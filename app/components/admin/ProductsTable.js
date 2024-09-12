@@ -45,7 +45,7 @@ const ProductsTable = async () => {
               <td className="p-2 text-center">{item.category}</td>
               <td className="p-2 text-center">
                 <ProductImageCard
-                  imageUrls={item.images} // Proporciona el array de URLs de imágenes
+                  imageUrls={item.images}
                   width={60}
                   height={60}
                 />

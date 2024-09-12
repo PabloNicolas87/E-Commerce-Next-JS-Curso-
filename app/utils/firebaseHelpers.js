@@ -45,6 +45,7 @@ export async function getProductsByCategory(category) {
 // Carga de imagenes al storage
 export const uploadImages = async (productId, files) => {
   const imageUrls = [];
+  files.sort((a, b) => a.name.localeCompare(b.name));
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
@@ -72,6 +73,6 @@ export const createProduct = async (id, values) => {
     id,
     price,
     inStock,
-    images: values.images, // Guarda la lista de URLs de las imágenes
+    images: values.images,
   });
 };
