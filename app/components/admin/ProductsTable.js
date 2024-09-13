@@ -1,65 +1,112 @@
+"use client";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaRegEdit } from "react-icons/fa";
 import DeleteProductBtn from "./DeleteProductBtn";
 import { getProductsByCategory } from "@/app/utils/firebaseHelpers";
 import ProductImageCard from "../ProductImageCard";
 
-const ProductsTable = async () => {
-  const items = await getProductsByCategory('all');
+const ProductsTable = () => {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      const products = await getProductsByCategory("all");
+      setItems(products);
+      setLoading(false);
+    };
+
+    fetchProducts();
+  }, []);
+
+  const handleDelete = (id) => {
+    setItems(items.filter((item) => item.id !== id));
+  };
+
+  if (loading) {
+    return <p>Cargando productos...</p>;
+  }
 
   return (
-    <div className="overflow-x-auto">
-      <div className="space-x-2 flex">
+    <div className="overflow-x-auto my-8">
+      <div className="space-x-2 flex justify-end">
         <Link
-          href="admin/create"
+          href="products/create"
           className="bg-cyan-500 py-2 px-2 lg:px-6 sm:px-10 rounded-md text-white shadow-md flex items-center justify-center"
         >
-          Create new
+          Añadir Producto
         </Link>
         <Link
-          href="admin/orders"
+          href="products/orders"
           className="bg-cyan-500 py-2 px-2 lg:px-6 sm:px-10 rounded-md text-white shadow-md flex items-center justify-center"
         >
           Orders
         </Link>
       </div>
+      <h2 className="text-2xl font-semibold mb-4">Productos</h2>
       <table className="w-full mt-5 rounded-md bg-white text-xs lg:text-sm text-left text-gray ">
         <thead className="text-base text-gray uppercase ">
-          <tr>
-            <th scope="col" className="px-3 py-2">Name</th>
-            <th scope="col" className="px-3 py-2 text-center">Price</th>
-            <th scope="col" className="px-3 py-2 text-center">In stock</th>
-            <th scope="col" className="px-3 py-2 text-center">Type</th>
-            <th scope="col" className="px-3 py-2 text-center">Image</th>
-            <th scope="col" className="px-3 py-2 text-center">Id</th>
-            <th scope="col" className="px-3 py-2">Description</th>
-            <th scope="col" className="px-3 py-2 text-center">Actions</th>
+          <tr className="bg-gray-200 text-left">
+            <th scope="col" className="py-3 px-4">
+              Nombre
+            </th>
+            <th className="py-3 px-4 text-center">
+              Precio
+            </th>
+            <th className="py-3 px-4 text-center">
+              Stock
+            </th>
+            <th className="py-3 px-4 text-center">
+              Tipo
+            </th>
+            <th className="py-3 px-4 text-center">
+              Imágen
+            </th>
+            <th className="py-3 px-4 text-center">
+              Id
+            </th>
+            <th className="py-3 px-4">
+              Descripción
+            </th>
+            <th className="py-3 px-4 text-center">
+              Acciones
+            </th>
           </tr>
         </thead>
         <tbody>
-          {items.map((item) => (
-            <tr key={item.id}>
-              <td className="p-2 truncate">{item.title}</td>
-              <td className="p-2 text-center">$ {item.price}</td>
-              <td className="p-2 text-center">{item.inStock}</td>
-              <td className="p-2 text-center">{item.category}</td>
-              <td className="p-2 text-center">
-                <ProductImageCard
-                  imageUrls={item.images}
-                  width={60}
-                  height={60}
-                />
-              </td>
-              <td className="p-2 text-center">{item.id}</td>
-              <td className="p-2 truncate max-w-prose">{item.description}</td>
-              <td className="flex space-x-3 justify-center">
-                <Link href={`/admin/edit/${item.id}`}>
-                  <FaRegEdit className="text-gray text-xl " />
-                </Link>
-                <DeleteProductBtn id={item.id} />
+          {items.length > 0 ? (
+            items.map((item) => (
+              <tr key={item.id}>
+                <td className="py-3 px-4 truncate">{item.title}</td>
+                <td className="py-3 px-4 text-center">$ {item.price}</td>
+                <td className="py-3 px-4 text-center">{item.inStock}</td>
+                <td className="py-3 px-4 text-center">{item.category}</td>
+                <td className="py-3 px-4 text-center">
+                  <ProductImageCard
+                    imageUrls={item.images}
+                    width={60}
+                    height={60}
+                  />
+                </td>
+                <td className="py-3 px-4 text-center">{item.id}</td>
+                <td className="py-3 px-4 truncate max-w-prose">{item.description}</td>
+                <td className="flex space-x-3 justify-center">
+                  <Link href={`products/edit/${item.id}`}>
+                    <FaRegEdit className="text-gray text-xl " />
+                  </Link>
+                  <DeleteProductBtn id={item.id} onDelete={handleDelete} />
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="8" className="text-center py-4">
+                No hay productos disponibles.
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

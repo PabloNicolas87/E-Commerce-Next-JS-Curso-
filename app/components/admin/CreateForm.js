@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { uploadImages, createProduct, updateProduct } from "@/app/utils/firebaseHelpers";
+import { uploadImages, createProduct, updateProduct, getCategories } from "@/app/utils/firebaseHelpers";
 import Swal from "sweetalert2";
 import { v4 as uuidv4 } from "uuid";
 
@@ -15,10 +15,17 @@ const CreateForm = ({ product }) => {
   });
 
   const [files, setFiles] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
+    const fetchCategories = async () => {
+      const categoriesFromFirestore = await getCategories();
+      setCategories(categoriesFromFirestore);
+    };
+    fetchCategories();
+
     if (product) {
       setValues({
         title: product.title || "",
@@ -105,7 +112,7 @@ const CreateForm = ({ product }) => {
   };
 
   return (
-    <div className="my-16 p-8 mx-3 sm:mx-20 lg:mx-40 xl:mx-52 2xl:mx-96 select-none bg-white rounded">
+    <div className="my-16 mx-3 select-none rounded">
       <h2 className="text-cyan font-semibold text-2xl pb-4">
         {isEditing ? "Editar Producto" : "Crear Producto"}
       </h2>
@@ -140,9 +147,11 @@ const CreateForm = ({ product }) => {
           <option value="" disabled>
             Selecciona la Categoría
           </option>
-          <option value="monitors">Monitors</option>
-          <option value="keyboards">Keyboards</option>
-          <option value="mouses">Mouses</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
         </select>
 
         <label className="text-black">Precio: </label>

@@ -1,8 +1,7 @@
-import { doc, collection, getDocs, query, where, setDoc, updateDoc } from "firebase/firestore";
+import { doc, collection, getDocs, query, where, setDoc, updateDoc, getDoc, addDoc, deleteDoc } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { db, storage } from "@/app/config/firebase";
 
-// Listado de categorías
 export async function getUniqueCategories() {
   try {
     const querySnapshot = await getDocs(collection(db, "products"));
@@ -42,6 +41,9 @@ export async function getProductsByCategory(category) {
   }
 }
 
+
+//-----------------------------------------------------------------------
+
 // Carga de imagenes al storage
 export const uploadImages = async (productId, files) => {
   const imageUrls = [];
@@ -76,13 +78,22 @@ export const createProduct = async (id, values) => {
   });
 };
 
-//Obtengo los productos por su ID para traerlos en el edit
+// Obtengo un producto por su ID
 export const getProductById = async (id) => {
-  const productRef = collection(db, "products");
-  const q = query(productRef, where("id", "==", id));
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs[0].data();
-}
+  try {
+    const productRef = doc(db, "products", id);
+    const productSnap = await getDoc(productRef);
+
+    if (productSnap.exists()) {
+      return productSnap.data();
+    } else {
+      throw new Error("Producto no encontrado");
+    }
+  } catch (error) {
+    console.error("Error al obtener el producto:", error);
+    throw error;
+  }
+};
 
 // Actualización de producto
 export const updateProduct = async (id, values) => {
@@ -96,4 +107,42 @@ export const updateProduct = async (id, values) => {
     inStock,
     images: values.images,
   });
+};
+
+
+// Obtener todas las categorías desde Firestore
+export const getCategories = async () => {
+  const categoriesCollection = collection(db, "categories");
+  const categoriesSnapshot = await getDocs(categoriesCollection);
+  return categoriesSnapshot.docs.map(doc => doc.data().name);
+};
+
+
+// Crear una nueva categoría 
+export const createCategory = async (name) => {
+  try {
+    const categoriesCollection = collection(db, "categories");
+    const docRef = await addDoc(categoriesCollection, { name });
+    return docRef;
+  } catch (error) {
+    console.error("Error al agregar la categoría:", error);
+    throw error;
+  }
+};
+
+// Eliminar Categorias
+export const deleteCategoryByName = async (name) => {
+  try {
+    const categoriesCollection = collection(db, "categories");
+    const q = query(categoriesCollection, where("name", "==", name));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const categoryDoc = querySnapshot.docs[0].ref; 
+      await deleteDoc(categoryDoc); 
+    }
+  } catch (error) {
+    console.error("Error al eliminar la categoría:", error);
+    throw error;
+  }
 };
