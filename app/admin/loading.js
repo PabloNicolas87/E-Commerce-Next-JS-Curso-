@@ -1,8 +1,9 @@
 import React from 'react'
+import SimpleSpinner from '../components/spinner/Spinner'
 
 const loading = () => {
   return (
-    <div>loading...</div>
+    <SimpleSpinner />
   )
 }
 

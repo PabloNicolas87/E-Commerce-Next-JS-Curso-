@@ -2,10 +2,12 @@
 import React, { useState } from 'react';
 import { createCategory } from '@/app/utils/firebaseHelpers';
 import Swal from 'sweetalert2';
+import { useRouter } from 'next/navigation'; // Importa useRouter
 
 const AddCategoryForm = () => {
   const [categoryName, setCategoryName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter(); // Inicializa useRouter
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +21,9 @@ const AddCategoryForm = () => {
 
     try {
       await createCategory(categoryName);
-      Swal.fire('Éxito', 'Categoría guardada correctamente', 'success');
+      Swal.fire('Éxito', 'Categoría guardada correctamente', 'success').then(() => {
+        router.push('/admin/categories');
+      });
       setCategoryName('');
     } catch (error) {
       Swal.fire('Error', 'Hubo un error al guardar la categoría', 'error');

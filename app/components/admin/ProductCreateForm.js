@@ -1,8 +1,9 @@
-"use client";
+'use client';
 import { useState, useEffect } from "react";
 import { uploadImages, createProduct, updateProduct, getCategories } from "@/app/utils/firebaseHelpers";
 import Swal from "sweetalert2";
 import { v4 as uuidv4 } from "uuid";
+import { useRouter } from 'next/navigation';
 
 const ProductCreateForm = ({ product }) => {
   const [values, setValues] = useState({
@@ -18,6 +19,7 @@ const ProductCreateForm = ({ product }) => {
   const [categories, setCategories] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -47,6 +49,8 @@ const ProductCreateForm = ({ product }) => {
       title: isEditing ? "Producto Actualizado!" : "Producto Creado!",
       showConfirmButton: false,
       timer: 1500,
+    }).then(() => {
+      router.push('/admin/products');
     });
   };
 

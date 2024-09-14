@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { getCategories } from '@/app/utils/firebaseHelpers';
 import Link from 'next/link';
 import CategoriesBtnDelete from './CategoriesBtnDelete';
+import SimpleSpinner from '../spinner/Spinner';
 
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -28,7 +29,7 @@ const CategoriesTable = () => {
   };
 
   if (loading) {
-    return <p>Cargando categorías...</p>;
+    return <SimpleSpinner />;
   }
 
   return (
