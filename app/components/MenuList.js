@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { getUniqueCategories } from '../utils/firebaseHelpers';
+import { getCategories } from '../utils/firebaseHelpers';
 import { CiSquareRemove } from "react-icons/ci";
 
 
@@ -10,7 +10,7 @@ const MenuList = ({ open, handleClose }) => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const uniqueCategories = await getUniqueCategories();
+      const uniqueCategories = await getCategories();
       setCategories(uniqueCategories);
     };
     fetchCategories();

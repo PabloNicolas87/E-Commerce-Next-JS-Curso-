@@ -2,30 +2,17 @@ import { doc, collection, getDocs, query, where, setDoc, updateDoc, getDoc, addD
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { db, storage } from "@/app/config/firebase";
 
-export async function getUniqueCategories() {
-  try {
-    const querySnapshot = await getDocs(collection(db, "products"));
-    const categoriesList = querySnapshot.docs.map(doc => doc.data().category);
-    const uniqueCategories = [...new Set(categoriesList)];
-    return uniqueCategories;
-  } catch (error) {
-    console.error("Error en la búsqueda de categorías: ", error);
-    return [];
-  }
-}
-
-// Productos por categoría filtrados
+// Filtrar Productos por Categorias
 export async function getProductsByCategory(category) {
   try {
     const productRef = collection(db, "products");
     let productQuery;
+    const normalizedCategory = category.replace(/\s+/g, '-').toLowerCase();
 
-    const lowerCaseCategory = category.toLowerCase();
-
-    if (lowerCaseCategory === 'all') {
+    if (normalizedCategory === 'all') {
       productQuery = query(productRef);
     } else {
-      productQuery = query(productRef, where('category', '==', lowerCaseCategory));
+      productQuery = query(productRef, where('category', '==', normalizedCategory));
     }
 
     const querySnap = await getDocs(productQuery);
@@ -41,10 +28,9 @@ export async function getProductsByCategory(category) {
   }
 }
 
+//-----------------------------------------------------------------------//
 
-//-----------------------------------------------------------------------
-
-// Carga de imagenes al storage
+// Guarda imágenes de Producto en Storage
 export const uploadImages = async (productId, files) => {
   const imageUrls = [];
   files.sort((a, b) => a.name.localeCompare(b.name));
@@ -63,7 +49,7 @@ export const uploadImages = async (productId, files) => {
   return imageUrls;
 };
 
-//Creacion de nuevo producto
+//Crear Producto
 export const createProduct = async (id, values) => {
   const price = parseFloat(values.price);
   const inStock = parseInt(values.inStock);
@@ -78,7 +64,7 @@ export const createProduct = async (id, values) => {
   });
 };
 
-// Obtengo un producto por su ID
+// Leer Producto
 export const getProductById = async (id) => {
   try {
     const productRef = doc(db, "products", id);
@@ -95,7 +81,7 @@ export const getProductById = async (id) => {
   }
 };
 
-// Actualización de producto
+// Actualizar Producto
 export const updateProduct = async (id, values) => {
   const price = parseFloat(values.price);
   const inStock = parseInt(values.inStock);
@@ -109,8 +95,9 @@ export const updateProduct = async (id, values) => {
   });
 };
 
+//-----------------------------------------------------------------------//
 
-// Obtener todas las categorías desde Firestore
+// Leer Categorías
 export const getCategories = async () => {
   const categoriesCollection = collection(db, "categories");
   const categoriesSnapshot = await getDocs(categoriesCollection);
@@ -118,11 +105,12 @@ export const getCategories = async () => {
 };
 
 
-// Crear una nueva categoría 
+// Crear Categorías
 export const createCategory = async (name) => {
   try {
     const categoriesCollection = collection(db, "categories");
-    const docRef = await addDoc(categoriesCollection, { name });
+    const normalizedCategory = name.replace(/\s+/g, '-').toLowerCase();
+    const docRef = await addDoc(categoriesCollection, { name: normalizedCategory });
     return docRef;
   } catch (error) {
     console.error("Error al agregar la categoría:", error);
@@ -130,7 +118,8 @@ export const createCategory = async (name) => {
   }
 };
 
-// Eliminar Categorias
+
+// Eliminar Categorías
 export const deleteCategoryByName = async (name) => {
   try {
     const categoriesCollection = collection(db, "categories");

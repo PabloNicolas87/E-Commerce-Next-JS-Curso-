@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { getUniqueCategories } from '../utils/firebaseHelpers';
+import { getCategories } from '../utils/firebaseHelpers';
 
 const NavigationMenu = ({ ulClassName }) => {
   const [categories, setCategories] = useState([]);
@@ -11,7 +11,7 @@ const NavigationMenu = ({ ulClassName }) => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const uniqueCategories = await getUniqueCategories();
+      const uniqueCategories = await getCategories();
       setCategories(uniqueCategories);
     };
     fetchCategories();

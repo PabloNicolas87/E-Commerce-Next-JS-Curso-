@@ -32,3 +32,4 @@ const ProductsPage = async ({ params }) => {
 };
 
 export default ProductsPage;
+
