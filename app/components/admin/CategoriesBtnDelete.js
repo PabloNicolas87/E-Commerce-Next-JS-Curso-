@@ -4,7 +4,7 @@ import { deleteCategoryByName } from '@/app/utils/firebaseHelpers';
 import { FaTrashAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 
-const DeleteCategoryBtn = ({ name, onDelete }) => {
+const CategoriesBtnDelete = ({ name, onDelete }) => {
   const handleDelete = async () => {
     const confirm = await Swal.fire({
       title: '¿Estás seguro?',
@@ -33,4 +33,4 @@ const DeleteCategoryBtn = ({ name, onDelete }) => {
   );
 };
 
-export default DeleteCategoryBtn;
+export default CategoriesBtnDelete;

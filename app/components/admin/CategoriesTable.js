@@ -1,10 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { getCategories } from '@/app/utils/firebaseHelpers';
-import DeleteCategoryBtn from './DeleteCategoryBtn';
 import Link from 'next/link';
+import CategoriesBtnDelete from './CategoriesBtnDelete';
 
-// Función para capitalizar la primera letra de una cadena
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
@@ -56,7 +55,7 @@ const CategoriesTable = () => {
               <tr key={index} className="border-t">
                 <td className="py-3 px-4">{capitalizeFirstLetter(category)}</td>
                 <td className="py-3 px-4 text-center">
-                  <DeleteCategoryBtn name={category} onDelete={handleDelete} />
+                  <CategoriesBtnDelete name={category} onDelete={handleDelete} />
                 </td>
               </tr>
             ))

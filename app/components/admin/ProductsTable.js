@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaRegEdit } from "react-icons/fa";
-import DeleteProductBtn from "./DeleteProductBtn";
 import { getProductsByCategory } from "@/app/utils/firebaseHelpers";
 import ProductImageCard from "../ProductImageCard";
+import ProductBtnDelete from "./ProductBtnDelete";
 
 const ProductsTable = () => {
   const [items, setItems] = useState([]);
@@ -96,7 +96,7 @@ const ProductsTable = () => {
                   <Link href={`products/edit/${item.id}`}>
                     <FaRegEdit className="text-gray text-xl " />
                   </Link>
-                  <DeleteProductBtn id={item.id} onDelete={handleDelete} />
+                  <ProductBtnDelete id={item.id} onDelete={handleDelete} />
                 </td>
               </tr>
             ))

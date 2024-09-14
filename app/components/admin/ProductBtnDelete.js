@@ -5,7 +5,7 @@ import { getStorage, ref, listAll, deleteObject } from "firebase/storage";
 import { FiTrash2 } from "react-icons/fi";
 import Swal from "sweetalert2";
 
-const DeleteProductBtn = ({ id, onDelete }) => {
+const ProductBtnDelete = ({ id, onDelete }) => {
   const storage = getStorage();
 
   const deleteProductImages = async (productId) => {
@@ -58,4 +58,4 @@ const DeleteProductBtn = ({ id, onDelete }) => {
   );
 };
 
-export default DeleteProductBtn;
+export default ProductBtnDelete;

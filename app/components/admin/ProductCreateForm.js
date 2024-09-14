@@ -4,7 +4,7 @@ import { uploadImages, createProduct, updateProduct, getCategories } from "@/app
 import Swal from "sweetalert2";
 import { v4 as uuidv4 } from "uuid";
 
-const CreateForm = ({ product }) => {
+const ProductCreateForm = ({ product }) => {
   const [values, setValues] = useState({
     title: "",
     description: "",
@@ -195,4 +195,4 @@ const CreateForm = ({ product }) => {
   );
 };
 
-export default CreateForm;
+export default ProductCreateForm;
