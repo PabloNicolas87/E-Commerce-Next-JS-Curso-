@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# E-Commerce App - Next.js
 
-## Getting Started
+Este proyecto es una aplicación de comercio electrónico construida con **Next.js**, utilizando **Firebase** para la gestión de datos y almacenamiento de imágenes. Los usuarios pueden ver detalles de productos, agregar productos al carrito y navegar por la galería de imágenes de los productos.
 
-First, run the development server:
+## 🚀 Enlace de Despliegue
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Puedes ver la aplicación en funcionamiento en el siguiente enlace:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+https://e-commerce-next-js-curso.vercel.app
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 📋 Características
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Listado de productos con imágenes.
+- Vista detallada de productos con información como título, descripción, categoría y precio.
+- Añadir productos al carrito de compras.
+- Integración con Firebase Firestore para gestionar los datos de los productos.
+- Carga dinámica de imágenes desde Firebase Storage.
+- Responsive y optimizada para dispositivos móviles.
+- SEO dinámico para cada producto usando metadata generada con Next.js.
 
-## Learn More
+## 🛠️ Tecnologías Utilizadas
 
-To learn more about Next.js, take a look at the following resources:
+- **Next.js**: Framework de React para SSR y SSG.
+- **Firebase Firestore**: Base de datos NoSQL en tiempo real para almacenar productos.
+- **Firebase Storage**: Almacenamiento de imágenes.
+- **Tailwind CSS**: Framework CSS para estilos rápidos y personalizables.
+- **Swiper**: Biblioteca para implementar un carrusel de imágenes interactivo.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Instalación y Configuración Local
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Sigue estos pasos para ejecutar el proyecto en tu entorno local:
 
-## Deploy on Vercel
+1. Clona el repositorio:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   git clone https://github.com/tu-usuario/e-commerce-next-js.git
+   
+2. Navega al directorio del proyecto:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   ```bash
+   cd e-commerce-next-js
+
+3. Instala las dependencias:
+
+   ```bash
+   npm install
+
+4. Crea un archivo .env.local en la raíz del proyecto y configura tus credenciales de Firebase:
+
+   ```bash
+   NEXT_PUBLIC_FIREBASE_API_KEY=tu-api-key
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=tu-auth-domain
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=tu-project-id
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=tu-storage-bucket
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=tu-messaging-sender-id
+   NEXT_PUBLIC_FIREBASE_APP_ID=tu-app-id
+
+5. Inicia el servidor de desarrollo:
+
+   ```bash
+   npm run dev
+
+6. Abre tu navegador y navega a http://localhost:3000.
+   
+📝 Licencia
+Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
