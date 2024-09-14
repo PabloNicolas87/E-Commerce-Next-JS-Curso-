@@ -4,6 +4,7 @@ import { storage } from '@/app/config/firebase';
 import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import Image from 'next/image';
 import 'swiper/css/bundle';
 
 const MyCarousel = () => {
@@ -35,10 +36,18 @@ const MyCarousel = () => {
         delay: 5000,
         disableOnInteraction: false,
       }}
+      className="w-full h-auto"
     >
       {imageUrls.map((url, index) => (
-        <SwiperSlide key={index}>
-          <img src={url} alt={`Slide ${index + 1}`} />
+        <SwiperSlide key={index} className="flex justify-center items-center">
+          <Image
+            src={url}
+            alt={`Slide ${index + 1}`}
+            width={1920}
+            height={1080}
+            className="w-full h-auto object-cover"
+            priority={index === 0}
+          />
         </SwiperSlide>
       ))}
     </Swiper>

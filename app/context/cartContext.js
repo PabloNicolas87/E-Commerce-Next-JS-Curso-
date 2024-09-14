@@ -1,16 +1,23 @@
 'use client'
-import { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from 'react';
 
-export const CartContext = createContext();
 
-export const CartProvider = ({children}) => {
-    const [cart, setcart] = useState([]);
-    const addtoCart = (item) => {
-        setcart([...cart, item]);
-    }
+const CartContext = createContext();
 
-    return <CartContext.Provider value = {{ cart, addtoCart }}>
-        {children}
-    </CartContext.Provider>}
+export const useCartContext = () => {
+    return useContext(CartContext);
+};
 
-export const useCartContext = () => useContext(CartContext);
+export const CartProvider = ({ children }) => {
+    const [cart, setCart] = useState([]);
+
+    const addToCart = (product) => {
+        setCart([...cart, product]);
+    };
+
+    return (
+        <CartContext.Provider value={{ cart, addToCart }}>
+            {children}
+        </CartContext.Provider>
+    );
+};

@@ -67,17 +67,16 @@ export const createProduct = async (id, values) => {
 // Leer Producto
 export const getProductById = async (id) => {
   try {
-    const productRef = doc(db, "products", id);
-    const productSnap = await getDoc(productRef);
+      const productRef = doc(db, "products", id);
+      const productSnap = await getDoc(productRef);
 
-    if (productSnap.exists()) {
-      return productSnap.data();
-    } else {
-      throw new Error("Producto no encontrado");
-    }
+      if (productSnap.exists()) {
+          return productSnap.data();
+      } else {
+          throw new Error("El documento no existe.");
+      }
   } catch (error) {
-    console.error("Error al obtener el producto:", error);
-    throw error;
+      throw new Error("Error al obtener el producto: " + error.message);
   }
 };
 

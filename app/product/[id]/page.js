@@ -1,62 +1,31 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import React from 'react';
 import ProductDetails from '@/app/components/ProductDetails';
-import Button from '@/app/components/Button';
-import SimpleSpinner from '@/app/components/spinner/Spinner';
 import ProductImageGallery from '@/app/components/ProductImageGallery';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '@/app/config/firebase';
-import { useCartContext } from '@/app/context/cartContext';
+import { getProductById } from '@/app/utils/firebaseHelpers';
+import AddToCartButton from '@/app/components/AddToCartButton';
 
-const ProductDetail = () => {
-    const { id } = useParams();
-    const [product, setProduct] = useState(null);
-    const [images, setImages] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const { addtoCart } = useCartContext();
+const ProductDetail = async ({ params }) => {
+    const { id } = params;
 
-    useEffect(() => {
-        const fetchProductData = async () => {
-            setLoading(true);
-            try {
-                const productRef = doc(db, "products", id);
-                const productSnap = await getDoc(productRef);
+    let product = null;
+    let images = [];
 
-                if (productSnap.exists()) {
-                    const fetchedProduct = productSnap.data();
-                    setProduct(fetchedProduct);
-                    setImages(fetchedProduct.images || []);
-                } else {
-                    console.error("No existe el documento.");
-                    setProduct(null);
-                    setImages([]);
-                }
-            } catch (error) {
-                console.error(error);
-                setProduct(null);
-                setImages([]);
-            }
-            setLoading(false);
-        };
-
-        fetchProductData();
-    }, [id]);
-
-    if (loading) {
-        return <SimpleSpinner />;
+    try {
+        product = await getProductById(id);
+        images = product.images || [];
+    } catch (error) {
+        console.error(error);
+        throw error;
     }
 
     return (
         <main className="container my-10 mx-auto flex-grow">
             <div className='max-w overflow-hidden m-4'>
                 <div className='grid md:grid-cols-2 grid-cols-1'>
-                    
                     <div>
                         <div className='block md:hidden font-bold text-xl my-3'>{product?.title}</div>
                         <ProductImageGallery images={images} />
                     </div>
-
                     <div>
                         <ProductDetails 
                             title={product?.title}
@@ -66,14 +35,12 @@ const ProductDetail = () => {
                             images={images}
                             customClass="hidden md:block"
                         />
-                        <Button className='ms-6 px-6 py-4' onClick={() => addtoCart(product)}>
-                            Add to Cart
-                        </Button>
+                        <AddToCartButton product={product} />
                     </div>
                 </div>
             </div>
         </main>
     );
-}
+};
 
 export default ProductDetail;
