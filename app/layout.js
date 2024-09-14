@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import './layout.css'
 import { CartProvider } from "./context/cartContext";
 import { AuthProvider } from "./context/authContext";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
             </div>  
           </CartProvider>   
         </AuthProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
