@@ -1,8 +1,7 @@
 'use client';
 import React from 'react';
 import { useAuthContext } from '../context/authContext';
-import LoginPage from '../login/Page';
-import { useRouter } from 'next/navigation';
+import LoginPage from '../login/PageLogin';
 
 const AdminLayout = ({ children }) => {
     const { user } = useAuthContext();
