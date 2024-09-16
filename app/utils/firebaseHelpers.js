@@ -1,5 +1,5 @@
 import { doc, collection, getDocs, query, where, setDoc, updateDoc, getDoc, addDoc, deleteDoc } from "firebase/firestore";
-import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytes, getStorage, listAll } from "firebase/storage";
 import { db, storage } from "@/app/config/firebase";
 
 // Filtrar Productos por Categorias
@@ -132,5 +132,41 @@ export const deleteCategoryByName = async (name) => {
   } catch (error) {
     console.error("Error al eliminar la categoría:", error);
     throw error;
+  }
+};
+
+//-----------------------------------------------------------------------//
+
+// Eliminar Banners
+export const deleteBanner = async (bannerUrl) => {
+  try {
+    const storage = getStorage();
+    const bannerPath = getBannerRefFromUrl(bannerUrl); // Obtener la ruta relativa
+    const bannerRef = ref(storage, bannerPath); // Crear referencia a partir de la ruta relativa
+
+    await deleteObject(bannerRef);
+    console.log(`Banner eliminado: ${bannerUrl}`);
+  } catch (error) {
+    console.error('Error eliminando el banner:', error);
+    throw new Error('No se pudo eliminar el banner.');
+  }
+};
+
+// Leer Banners
+export const getBanners = async () => {
+  try {
+    const storage = getStorage();
+    const bannersRef = ref(storage, 'banners/');
+    const bannersList = await listAll(bannersRef);
+
+    // Obtener URLs de descarga de todos los banners
+    const bannerURLs = await Promise.all(
+      bannersList.items.map((itemRef) => getDownloadURL(itemRef))
+    );
+
+    return bannerURLs;
+  } catch (error) {
+    console.error('Error fetching banners:', error);
+    throw new Error('No se pudieron obtener los banners');
   }
 };

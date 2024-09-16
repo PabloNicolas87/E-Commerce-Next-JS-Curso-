@@ -1,16 +1,17 @@
-'use client'
-import React from 'react'
-import { useAuthContext } from '../context/authContext'
-import LoginPage from './login/LoginPage';
+'use client';
+import React from 'react';
+import { useAuthContext } from '../context/authContext';
+import LoginPage from '../login/Page';
+import { useRouter } from 'next/navigation';
 
-const AdminLayout = ({children}) => {
-    const {user} = useAuthContext();
-    return (
-        <div>
-            {user.logged ? children : <LoginPage />}    
-        </div>
-        
-    )
-}
+const AdminLayout = ({ children }) => {
+    const { user } = useAuthContext();
 
-export default AdminLayout
+    if (!user.logged || user.role !== 'admin') {
+        return <LoginPage />;
+    }
+
+    return <div>{children}</div>;
+};
+
+export default AdminLayout;

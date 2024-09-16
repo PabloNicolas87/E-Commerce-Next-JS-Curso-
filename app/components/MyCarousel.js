@@ -13,7 +13,7 @@ const MyCarousel = () => {
   useEffect(() => {
     const fetchImageUrls = async () => {
       try {
-        const folderRef = ref(storage, 'slider');
+        const folderRef = ref(storage, 'banners');
         const { items } = await listAll(folderRef);
         const urls = await Promise.all(items.map(item => getDownloadURL(item)));
         setImageUrls(urls);
