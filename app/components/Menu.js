@@ -60,7 +60,7 @@ const Menu = () => {
                       try {
                         await logOutUser();
                         setOpenUserDropdown(false);
-                        router.push('/login');
+                        router.push('/login/PageLogin');
                       } catch (error) {
                         console.error('Error al cerrar sesión:', error);
                       }
@@ -73,7 +73,7 @@ const Menu = () => {
               )}
             </>
           ) : (
-            <Link href="/login" className="block px-4 py-3 text-sm text-white" onClick={() => setOpenUserDropdown(false)}>
+            <Link href="/login/PageLogin" className="block px-4 py-3 text-sm text-white" onClick={() => setOpenUserDropdown(false)}>
               Iniciar Sesión
             </Link>
           )}
