@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaBoxOpen, FaTags, FaFileAlt, FaSlidersH } from 'react-icons/fa';
+import { FaBoxOpen, FaTags, FaFileAlt, FaSlidersH, FaTasks } from 'react-icons/fa';
 import AdminCard from '../components/AdminCard';
 
 export const metadata = {
@@ -11,6 +11,7 @@ export const metadata = {
 const AdminPage = () => {
   return (
         <main className='container my-10 mx-auto flex-grow'>
+            <AdminCard name="Ordenes Realizadas" icon={<FaTasks />} path="/admin/orders" />
             <AdminCard name="Categorías" icon={<FaTags />} path="/admin/categories" />
             <AdminCard name="Productos" icon={<FaBoxOpen />} path="/admin/products" />
             <AdminCard name="Banners" icon={<FaFileAlt />} path="/admin/banners" />

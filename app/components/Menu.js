@@ -47,14 +47,16 @@ const Menu = () => {
                   <Link href="/user" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={() => setOpenUserDropdown(false)}>
                     Mi Perfil
                   </Link>
+                  {user.role === 'admin' ? null : (
+                    <Link href="/orders" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={() => setOpenUserDropdown(false)}>
+                      Mis Compras
+                    </Link>
+                  )}
                   {user.role === 'admin' && (
                     <Link href="/admin" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={() => setOpenUserDropdown(false)}>
                       Mi Tablero
                     </Link>
                   )}
-                  <Link href="/orders" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={() => setOpenUserDropdown(false)}>
-                    Mis Compras
-                  </Link>
                   <button
                     onClick={async () => {
                       try {
