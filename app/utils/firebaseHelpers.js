@@ -145,7 +145,6 @@ export const deleteBanner = async (bannerUrl) => {
     const bannerRef = ref(storage, bannerPath); // Crear referencia a partir de la ruta relativa
 
     await deleteObject(bannerRef);
-    console.log(`Banner eliminado: ${bannerUrl}`);
   } catch (error) {
     console.error('Error eliminando el banner:', error);
     throw new Error('No se pudo eliminar el banner.');

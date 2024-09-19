@@ -12,7 +12,10 @@ export const AuthProvider = ({ children }) => {
         logged: false,
         email: null,
         uid: null,
-        role: null
+        role: null,
+        name: null,
+        surname: null,
+        photoURL: null
     });
 
     const router = useRouter();
@@ -22,12 +25,13 @@ export const AuthProvider = ({ children }) => {
         const userDoc = await getDoc(userRef);
     
         if (!userDoc.exists()) {
+            // Si el usuario no existe, crea uno nuevo
             await setDoc(userRef, {
                 name: name,
                 surname: surname,
                 email: email,
                 role: "user",
-                compras: [], 
+                compras: [],
                 createdAt: new Date(),
                 photoURL: "",
             });
@@ -36,17 +40,27 @@ export const AuthProvider = ({ children }) => {
                 email: email,
                 uid: uid,
                 role: "user",
+                name: name,
+                surname: surname,
+                photoURL: "",
             });
         } else {
+            // Si el usuario existe, obtener sus datos
             const userData = userDoc.data();
             setUser({
                 logged: true,
                 email: userData.email,
                 uid: uid,
                 role: userData.role,
+                name: userData.name,
+                surname: userData.surname,
+                photoURL: userData.photoURL || "No disponible",
             });
         }
     };
+    
+    
+    
 
     const registerUser = async (values) => {
         try {
@@ -85,16 +99,16 @@ export const AuthProvider = ({ children }) => {
         try {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
-
+    
             const fullName = user.displayName || "Google User";
             const nameParts = fullName.split(" ");
             const name = nameParts[0] || "Google";
             const surname = nameParts.slice(1).join(" ") || "User";
             const photoURL = user.photoURL || "";
-
+    
             const userDocRef = doc(db, "users", user.uid);
             const docSnap = await getDoc(userDocRef);
-
+    
             if (!docSnap.exists()) {
                 await setDoc(userDocRef, {
                     name: name,
@@ -105,15 +119,18 @@ export const AuthProvider = ({ children }) => {
                     photoURL: photoURL
                 });
             }
-
+    
             const userData = docSnap.data();
             setUser({
                 logged: true,
                 email: user.email,
                 uid: user.uid,
                 role: userData.role,
+                name: userData.name,
+                surname: userData.surname,
+                photoURL: userData.photoURL || "No disponible",
             });
-
+    
             if (userData.role === 'admin') {
                 router.push('/admin');
             } else {
@@ -122,7 +139,7 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
             console.error('Error al iniciar sesión con Google:', error);
         }
-    };
+    };    
 
     const logOutUser = async () => {
         await signOut(auth);
@@ -131,12 +148,6 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
-                setUser({
-                    logged: true,
-                    email: user.email,
-                    uid: user.uid
-                });
-
                 await checkUserInFirestore(user.uid, user.email, "Unknown", "Unknown");
             } else {
                 setUser({
@@ -147,9 +158,9 @@ export const AuthProvider = ({ children }) => {
                 });
             }
         });
-
         return () => unsubscribe();
     }, []);
+    
 
     return (
         <AuthContext.Provider value={{ user, registerUser, loginUser, logOutUser, googleLogin }}>
