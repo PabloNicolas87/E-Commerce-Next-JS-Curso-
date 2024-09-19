@@ -6,14 +6,14 @@ import Image from 'next/image';
 const UserProfile = () => {
     const { user } = useAuthContext();
 
-    if (!user) return null;
+    if (!user || !user.logged) return null;
 
     return (
         <div className="overflow-x-auto my-8">
             <div className='flex justify-between items-center py-3'>
                 <h2 className="text-2xl font-semibold my-4">Perfil de Usuario</h2>
                 <Image 
-                    src={user.photoURL} 
+                    src={user.photoURL || "/default-avatar.png"} 
                     alt={"Foto de Perfil"} 
                     width={100} 
                     height={100}

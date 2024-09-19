@@ -1,16 +1,10 @@
-import React, { Suspense, lazy } from 'react';
-import SimpleSpinner from '../components/spinner/Spinner';
-
-// Carga diferida del componente UserProfile
-const UserProfile = lazy(() => import('../components/UserProfile'));
-
+import React from 'react';
+import UserProfile from '../components/UserProfile';
 
 const PageUser = () => {
   return (
     <main className='container my-10 mx-auto flex-grow'>
-        <Suspense fallback={<SimpleSpinner />}>
-            <UserProfile />
-        </Suspense>
+        <UserProfile />
     </main>
   );
 }

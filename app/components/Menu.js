@@ -32,8 +32,7 @@ const Menu = () => {
   }, []);
 
   useEffect(() => {
-    console.log("User state has changed:", user);
-  }, [user]); // Log when user state changes
+  }, [user]);
 
   return (
     <div>

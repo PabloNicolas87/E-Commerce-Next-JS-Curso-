@@ -21,46 +21,47 @@ export const AuthProvider = ({ children }) => {
     const router = useRouter();
 
     const checkUserInFirestore = async (uid, email, name, surname) => {
-        const userRef = doc(db, "users", uid);
-        const userDoc = await getDoc(userRef);
-    
-        if (!userDoc.exists()) {
-            // Si el usuario no existe, crea uno nuevo
-            await setDoc(userRef, {
-                name: name,
-                surname: surname,
-                email: email,
-                role: "user",
-                compras: [],
-                createdAt: new Date(),
-                photoURL: "",
-            });
-            setUser({
-                logged: true,
-                email: email,
-                uid: uid,
-                role: "user",
-                name: name,
-                surname: surname,
-                photoURL: "",
-            });
-        } else {
-            // Si el usuario existe, obtener sus datos
-            const userData = userDoc.data();
-            setUser({
-                logged: true,
-                email: userData.email,
-                uid: uid,
-                role: userData.role,
-                name: userData.name,
-                surname: userData.surname,
-                photoURL: userData.photoURL || "No disponible",
-            });
+        try {
+            const userRef = doc(db, "users", uid);
+            const userDoc = await getDoc(userRef);
+        
+            if (!userDoc.exists()) {
+                // Si el usuario no existe, crea uno nuevo
+                await setDoc(userRef, {
+                    name: name,
+                    surname: surname,
+                    email: email,
+                    role: "user",
+                    compras: [],
+                    createdAt: new Date(),
+                    photoURL: "",
+                });
+                setUser({
+                    logged: true,
+                    email: email,
+                    uid: uid,
+                    role: "user",
+                    name: name,
+                    surname: surname,
+                    photoURL: "",
+                });
+            } else {
+                // Si el usuario existe, obtener sus datos
+                const userData = userDoc.data();
+                setUser({
+                    logged: true,
+                    email: userData.email,
+                    uid: uid,
+                    role: userData.role,
+                    name: userData.name,
+                    surname: userData.surname,
+                    photoURL: userData.photoURL || "No disponible",
+                });
+            }
+        } catch (error) {
+            console.error('Error al verificar el usuario en Firestore:', error);
         }
     };
-    
-    
-    
 
     const registerUser = async (values) => {
         try {
@@ -99,16 +100,16 @@ export const AuthProvider = ({ children }) => {
         try {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
-    
+
             const fullName = user.displayName || "Google User";
             const nameParts = fullName.split(" ");
             const name = nameParts[0] || "Google";
             const surname = nameParts.slice(1).join(" ") || "User";
             const photoURL = user.photoURL || "";
-    
+
             const userDocRef = doc(db, "users", user.uid);
             const docSnap = await getDoc(userDocRef);
-    
+
             if (!docSnap.exists()) {
                 await setDoc(userDocRef, {
                     name: name,
@@ -119,7 +120,7 @@ export const AuthProvider = ({ children }) => {
                     photoURL: photoURL
                 });
             }
-    
+
             const userData = docSnap.data();
             setUser({
                 logged: true,
@@ -130,7 +131,7 @@ export const AuthProvider = ({ children }) => {
                 surname: userData.surname,
                 photoURL: userData.photoURL || "No disponible",
             });
-    
+
             if (userData.role === 'admin') {
                 router.push('/admin');
             } else {
@@ -142,25 +143,41 @@ export const AuthProvider = ({ children }) => {
     };    
 
     const logOutUser = async () => {
-        await signOut(auth);
+        try {
+            await signOut(auth);
+            setUser({
+                logged: false,
+                email: null,
+                uid: null,
+                role: null,
+                name: null,
+                surname: null,
+                photoURL: null
+            });
+            router.push('/');
+        } catch (error) {
+            console.error('Error al cerrar sesión:', error);
+        }
     };
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                await checkUserInFirestore(user.uid, user.email, "Unknown", "Unknown");
+        const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
+            if (authUser) {
+                await checkUserInFirestore(authUser.uid, authUser.email, "Unknown", "Unknown");
             } else {
                 setUser({
                     logged: false,
                     email: null,
                     uid: null,
-                    role: null
+                    role: null,
+                    name: null,
+                    surname: null,
+                    photoURL: null
                 });
             }
         });
         return () => unsubscribe();
     }, []);
-    
 
     return (
         <AuthContext.Provider value={{ user, registerUser, loginUser, logOutUser, googleLogin }}>
