@@ -2,24 +2,34 @@
 import React, { useState } from 'react';
 import { useAuthContext } from '../context/authContext';
 import Image from 'next/image';
-import EditProfile from '../user/edit/page';
+import EditProfile from '../user/editData/page';
 import Button from './Button';
+import ChangePasswordModal from '../user/editPass/page';
 
 
 const UserProfile = () => {
     const { user, updateUser } = useAuthContext();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
+  
     if (!user || !user.logged) return null;
-
-    const openModal = () => {
-        setIsModalOpen(true);
+  
+    const openEditModal = () => {
+      setIsEditModalOpen(true);
     };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
+  
+    const closeEditModal = () => {
+      setIsEditModalOpen(false);
     };
-
+  
+    const openChangePasswordModal = () => {
+      setIsChangePasswordOpen(true);
+    };
+  
+    const closeChangePasswordModal = () => {
+      setIsChangePasswordOpen(false);
+    };
+  
     return (
         <div className="overflow-x-auto my-8">
             <div className="flex justify-between items-center py-3">
@@ -61,17 +71,21 @@ const UserProfile = () => {
             </table>
 
             <div className="mt-6 text-center">
-                <button 
-                    
+                <Button className="bg-green-500 text-white py-2 px-6 rounded-full hover:bg-green-600 transition duration-300 ml-4"
+                onClick={openChangePasswordModal}
                 >
-                </button>
-                <Button className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 transition duration-300" onClick={openModal}>Editar Perfil</Button>
+                Cambiar Contraseña
+                </Button>
+                <Button className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 transition duration-300" onClick={openEditModal}>Editar Perfil</Button>
             </div>
 
-            {isModalOpen && (
-                <EditProfile onClose={closeModal} updateUser={updateUser} />
+            {isEditModalOpen && (
+        <EditProfile onClose={closeEditModal} updateUser={updateUser} />
+      )}
 
-            )}
+      {isChangePasswordOpen && (
+        <ChangePasswordModal onClose={closeChangePasswordModal} />
+      )}
         </div>
     );
 };
