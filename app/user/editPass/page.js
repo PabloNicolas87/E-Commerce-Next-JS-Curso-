@@ -50,39 +50,39 @@ const ChangePasswordModal = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full">
-        <h3 className="text-xl font-semibold mb-4">Cambiar Contraseña</h3>
-        <form onSubmit={handleSubmit}>
-          {isPasswordLogin && (
+        <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full">
+            <h3 className="text-xl font-semibold mb-4">Cambiar Contraseña</h3>
+            <form onSubmit={handleSubmit}>
+            {isPasswordLogin && (
+                <input
+                type="password"
+                name="currentPassword"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                placeholder="Contraseña actual"
+                className="p-2 border rounded-lg mb-4"
+                />
+            )}
             <input
-              type="password"
-              name="currentPassword"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              placeholder="Contraseña actual"
-              className="p-2 border rounded-lg mb-4"
+                type="password"
+                name="newPassword"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Nueva Contraseña"
+                className="p-2 border rounded-lg mb-4"
             />
-          )}
-          <input
-            type="password"
-            name="newPassword"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="Nueva Contraseña"
-            className="p-2 border rounded-lg mb-4"
-          />
-          <div className="flex justify-between py-5">
-            <Button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-lg">
-              Actualizar Contraseña
-            </Button>
-            <Button onClick={onClose} className="bg-gray-300 py-2 px-4 rounded-lg">
-              Cancelar
-            </Button>
-          </div>
-          {error && <p className="text-red-500">{error}</p>}
-          {success && <p className="text-green-500">{success}</p>}
-        </form>
-      </div>
+            <div className="flex justify-between py-5">
+                <Button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-lg">
+                Actualizar Contraseña
+                </Button>
+                <Button onClick={onClose} className="bg-gray-300 py-2 px-4 rounded-lg">
+                Cancelar
+                </Button>
+            </div>
+            {error && <p className="text-red-500">{error}</p>}
+            {success && <p className="text-green-500">{success}</p>}
+            </form>
+        </div>
     </div>
   );
 };
