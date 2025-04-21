@@ -1,5 +1,10 @@
-import { doc, collection, getDocs, query, where, setDoc, updateDoc, getDoc, addDoc, deleteDoc } from "firebase/firestore";
-import { ref, getDownloadURL, uploadBytes, getStorage, listAll } from "firebase/storage";
+import { 
+  doc, collection, getDocs, query, where, setDoc, updateDoc, getDoc, addDoc, deleteDoc 
+} from "firebase/firestore";
+import { 
+  ref, getDownloadURL, uploadBytes, getStorage, listAll, deleteObject 
+} from "firebase/storage";
+import { getAuth, deleteUser as firebaseDeleteUser} from "firebase/auth";
 import { db, storage } from "@/app/config/firebase";
 
 // Filtrar Productos por Categorias
@@ -132,6 +137,22 @@ export const deleteCategoryByName = async (name) => {
   } catch (error) {
     console.error("Error al eliminar la categoría:", error);
     throw error;
+  }
+};
+
+//-----------------------------------------------------------------------//
+
+export const getAllUsers = async () => {
+  try {
+    const usersCollection = collection(db, "users");
+    const usersSnapshot = await getDocs(usersCollection);
+    return usersSnapshot.docs.map(doc => ({
+      uid: doc.id,
+      email: doc.data().email
+    }));
+  } catch (error) {
+    console.error("Error al obtener usuarios:", error);
+    return [];
   }
 };
 

@@ -7,6 +7,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const AuthContext = createContext();
 
+
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState({
         logged: false,
